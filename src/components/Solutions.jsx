@@ -152,7 +152,7 @@ export default function BuiltForSection() {
         
         {/* Header */}
         <div className="max-w-3xl mb-8 md:mb-12">
-          <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
+          <h1 className="persona-heading hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
             Built for whoever owns the timetable.
           </h1>
           <p className="persona-subtitle text-gray-500 text-sm md:text-lg leading-relaxed font-medium">
