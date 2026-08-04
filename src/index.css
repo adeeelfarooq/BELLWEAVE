@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* 1. LOAD CUSTOM LOCAL FONT */
+@font-face {
+  font-family: "ProximaNova";
+  src: url("/fonts/ProximaNova-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* Yeh lagana zaroori hai taake load hote waqt text invisible na ho */
+}
+
+@theme {
+  /* Bellweave Corporate Colors */
+  --color-milk-yellow: #e3d3bc;
+  --color-brand-bg: #f8fafc;       
+  --color-brand-dark: #0f172a;     
+  --color-brand-primary: #0f6a31;  
+  --color-brand-secondary: #0ea5e9;
+  --color-white: #ffffff;
+  
+  /* 2. APPLY PROXIMA NOVA GLOBALLY */
+  --font-sans: "ProximaNova", sans-serif;
+}
+
+/* ANTI-LAG GLOBAL RESET */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #0f6a31;
+  color: var(--color-brand-dark);
+  font-family: var(--font-sans); /* Pura body ab Proxima Nova use karega */
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Video & Canvas Hardware Acceleration */
+video, canvas {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* ... Baaki apki neeche wali components ki CSS waisi hi rahegi ... */
+
+/* ---- COMPONENTS LAYER ---- */
+@layer components {
+  .hero-container {
+    @apply relative bg-milk-yellow w-screen h-dvh overflow-hidden;
+  }
+  
+  .hero-content {
+    @apply relative z-10 w-full h-full flex flex-col justify-center items-center pt-24 md:pt-0;
+  }
+
+  /* Massive Tech Headline */
+  .hero-title {
+    @apply text-brand-dark 2xl:text-[9rem] md:text-[7rem] text-[4rem] font-black uppercase leading-[0.9] tracking-tighter text-center;
+  }
+
+  /* Scrolling Tape Effect (Converted to Tech Blue) */
+  .hero-text-scroll {
+    @apply rotate-[-2deg] my-8 border-y-4 border-brand-primary bg-brand-dark shadow-2xl;
+  }
+
+  .hero-subtitle {
+    @apply px-4 py-2 flex gap-8 whitespace-nowrap;
+  }
+
+  .hero-subtitle h1 {
+    @apply uppercase md:text-5xl text-3xl font-bold text-white tracking-widest;
+  }
+
+  /* Gooey Button Tech Version */
+  .hero-button {
+    @apply mt-12 scale-90 md:scale-100 cursor-pointer text-white bg-brand-primary uppercase font-bold text-lg rounded-full py-5 px-16 shadow-[0_10px_30px_rgba(37,99,235,0.4)];
+  }
+}
