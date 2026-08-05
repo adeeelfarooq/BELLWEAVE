@@ -148,14 +148,14 @@ export default function BuiltForSection() {
     >
       <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand-primary/5 blur-[120px] pointer-events-none"></div>
 
-      <div className="max-w-6xl mx-auto w-full relative z-10">
+      <div className="max-w-6xl flex flex-col justify-center items-center mx-auto w-full relative z-10">
         
         {/* Header */}
-        <div className="max-w-3xl mb-8 md:mb-12">
-          <h1 className="persona-heading hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
+        <div className="max-w-3xl   mb-8 md:mb-12">
+          <h1 className="persona-heading  hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
             Built for whoever owns the timetable.
           </h1>
-          <p className="persona-subtitle text-gray-500 text-sm md:text-lg leading-relaxed font-medium">
+          <p className="persona-subtitle text-gray-500 text-center text-sm md:text-lg leading-relaxed font-medium">
             Head teacher, deputy head, business manager, or the person who actually builds the grid every term — Bellweave is built around them.
           </p>
         </div>

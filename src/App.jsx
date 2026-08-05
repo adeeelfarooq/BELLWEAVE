@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import BuiltForSection from './components/Solutions'
 import WhatItDoesSection from './components/Whatitdoes';
+import HowItWorksSection from './components/HowItWorks';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, ScrollSmoother);
 
@@ -33,6 +34,7 @@ const App = () => {
       <Hero/>
       <BuiltForSection/>
       <WhatItDoesSection/>
+      <HowItWorksSection/>
       </div>
       </div>
     </main>
