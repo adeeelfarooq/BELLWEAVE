@@ -71,7 +71,7 @@ const BookDemoSection = () => {
 
     return (
         // 🚀 FIX: h-screen ki jagah properly min-h-screen lagaya aur lg:py-0 hata diya taake height choti hone pe kate nahi.
-        <section ref={sectionRef} className="relative w-full min-h-screen flex items-center bg-[#0f172a] text-[#FAF6EF] py-16 px-6 md:px-14 overflow-x-hidden">
+        <section id='book-demo' ref={sectionRef}  className="relative w-full min-h-screen flex items-center bg-[#0f172a] text-[#FAF6EF] py-16 px-6 md:px-14 overflow-x-hidden">
             
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[60%] rounded-full bg-[#0f6a31]/20 blur-[150px]"></div>

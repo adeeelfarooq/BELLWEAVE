@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-// Ensure you have GSAP Club plugins (SplitText) installed in your project
-import { SplitText, ScrollTrigger } from "gsap/all";
+// 🚀 FIX: ScrollToPlugin import kar liya hai taake button click par smooth scroll ho
+import { SplitText, ScrollTrigger, ScrollToPlugin } from "gsap/all";
 import { useMediaQuery } from "react-responsive";
 import AnimatedHoverText from "../components/AnimatedHoverText";
 
-gsap.registerPlugin(SplitText, ScrollTrigger);
+// 🚀 FIX: Plugin register karna zaroori hai
+gsap.registerPlugin(SplitText, ScrollTrigger, ScrollToPlugin);
 
 const Hero = () => {
     const containerRef = useRef(null);
@@ -15,7 +16,6 @@ const Hero = () => {
     const isTablet = useMediaQuery({ query: "(max-width: 1024px)" });
 
     useGSAP(() => {
-        // Splitting the text for that premium letter-by-letter entrance
         const titleSplit = new SplitText(".hero-title", { type: "chars" });
 
         const tl = gsap.timeline({
@@ -23,7 +23,6 @@ const Hero = () => {
             defaults: { force3D: true }
         });
 
-        // Intro Animation
         tl.to(".hero-content", {
             opacity: 1,
             y: 0,
@@ -41,7 +40,6 @@ const Hero = () => {
             ease: "power3.out"
         }, "-=0.5");
 
-        // ScrollTrigger: When scrolling down, the whole section shrinks and rotates
         const heroTl = gsap.timeline({
             scrollTrigger: {
                 trigger: ".hero-container",
@@ -68,10 +66,18 @@ const Hero = () => {
 
     }, { scope: containerRef }); 
 
+    // 🚀 FIX: Button click par scroll karne wala function
+    const handleScrollToDemo = () => {
+        gsap.to(window, {
+            duration: 2.5,
+            scrollTo: "#book-demo", // Ye id BookDemoSection me honi chahiye
+            ease: "power3.inOut" // Premium smooth scroll ease
+        });
+    };
+
     return (
         <div ref={containerRef} className="bg-brand-dark"> 
             
-            {/* INLINE STYLE FOR HORIZONTAL MARQUEE ANIMATION */}
             <style>
                 {`
                     @keyframes marquee-scroll {
@@ -93,17 +99,14 @@ const Hero = () => {
 
                     <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-primary/10 blur-[120px] pointer-events-none"></div>
                         
-                    {/* Added !pt-16 to move content slightly up so it fits on all screens */}
                     <div className='hero-content opacity-0 flex flex-col justify-center !pt-16' style={{ willChange: "transform, opacity" }}>
                         
                         <div className='md:overflow-hidden px-4'>
-                            {/* 🚀 FIX: Mobile text size slightly adjusted (!text-[2.4rem]) and removed hidden class from <br /> so it strictly breaks into 2 lines perfectly on mobile too. */}
                             <h1 className='hero-title text-brand-dark !text-[1.8rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
                                 School scheduling <br /> that tells you the truth
                             </h1>
                         </div>
                         
-                        {/* Angled Scrolling Tape - reduced vertical margins with !my-4 md:!my-6 */}
                         <div 
                             style={{
                                 clipPath: "polygon(50% 0, 0% 0, 0% 100%, 100% 100%)",
@@ -112,7 +115,6 @@ const Hero = () => {
                             className="hero-text-scroll w-[110%] -ml-[5%] !my-4 md:!my-6">
                             
                             <div className="hero-subtitle overflow-hidden flex whitespace-nowrap">
-                                {/* HORIZONTAL SCROLLING LINE WITH BELLWEAVE SERVICES */}
                                 <div className="animate-marquee-horizontal !normal-case">
                                     <h1 className="inline-block px-4 !text-2xl md:!text-4xl">
                                         Conflict-Free Timetables • Honest Substitutions • Full Audit Trail • Multi-Campus Scheduling • Conflict-Free Timetables • Honest Substitutions • Full Audit Trail • Multi-Campus Scheduling •
@@ -121,19 +123,21 @@ const Hero = () => {
                             </div>
                         </div>
                         
-                        {/* BELLWEAVE ACTUAL DESCRIPTION - widened max-w to 3xl to reduce lines */}
                         <h2 className="font-sans text-gray-500 text-center max-w-3xl md:text-lg text-sm leading-relaxed mt-2 px-4 font-medium">
                             Bellweave builds your school's timetable, keeps every teacher, room and class conflict-free, and finds the right cover the moment someone calls in sick — or tells you honestly when no one is available.
                         </h2>
                         
-                        {/* UPDATED BUTTON: Gooey effects removed, AnimatedLink added, cursor-pointer added */}
-                        <div className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8 cursor-pointer py-4">
+                        {/* 🚀 FIX: onClick function lagaya aur shadow ko explicitly remove kar diya (!shadow-none) */}
+                        <div 
+                            onClick={handleScrollToDemo}
+                            className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8 cursor-pointer py-4 !shadow-none"
+                            style={{ boxShadow: 'none' }}
+                        >
                             
                             {/* Simple solid background instead of gooey filter */}
-                            <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none"></div>
+                            <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none !shadow-none"></div>
 
                             <div className="relative z-10 text-white font-bold uppercase tracking-widest m-0 px-4">
-                                {/* AnimatedLink component with white hover color to match button theme */}
                                 <AnimatedHoverText text="BOOK A DEMO"  />
                             </div>
 
