@@ -97,9 +97,9 @@ const Hero = () => {
                     <div className='hero-content opacity-0 flex flex-col justify-center !pt-16' style={{ willChange: "transform, opacity" }}>
                         
                         <div className='md:overflow-hidden px-4'>
-                            {/* Adjusted font sizes to keep it in 2 lines perfectly */}
-                            <h1 className='hero-title text-brand-dark !text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
-                                School scheduling <br className="hidden sm:block" /> that tells you the truth
+                            {/* 🚀 FIX: Mobile text size slightly adjusted (!text-[2.4rem]) and removed hidden class from <br /> so it strictly breaks into 2 lines perfectly on mobile too. */}
+                            <h1 className='hero-title text-brand-dark !text-[1.8rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
+                                School scheduling <br /> that tells you the truth
                             </h1>
                         </div>
                         
