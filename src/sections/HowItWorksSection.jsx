@@ -9,7 +9,7 @@ const HowItWorksSection = () => {
         {/* PINNED BUTTON */}
         <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
             <a href="#" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
-                <span className="relative">
+                <span className="relative whitespace-nowrap">
                     Read the full walkthrough
                     <span className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-[#0f6a31]"></span>
                 </span>
