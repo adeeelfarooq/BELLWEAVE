@@ -4,10 +4,9 @@ import Howitworksslider from '../components/Howitworksslider'
 
 const HowItWorksSection = () => {
   return (
-    // 'relative' add kiya hai taake absolute button iske hisaab se pin ho
     <section className='flavor-section max-md:mb-20 overflow-hidden bg-[#FAF6EF] text-[#0f172a] relative'>
         
-        {/* PINNED BUTTON - Ye button ab hamesha yahan pinned rahega jab tak section scroll hoga */}
+        {/* PINNED BUTTON */}
         <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
             <a href="#" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
                 <span className="relative">
@@ -20,13 +19,14 @@ const HowItWorksSection = () => {
             </a>
         </div>
 
-        <div className="horizontal-scroll-container h-screen flex lg:flex-row flex-col items-center relative w-[max-content]">
+        {/* 🚀 FIX: Mobile par w-full aur flex-col taake content screen se bahar na jaye */}
+        <div className="horizontal-scroll-container lg:h-screen min-h-screen flex lg:flex-row flex-col lg:items-center relative lg:w-[max-content] w-full">
             
-            <div className="lg:w-[45vw] w-screen flex-none h-80 lg:h-full flex flex-col justify-center px-6 md:px-16 pt-20 md:pt-0">
+            <div className="lg:w-[45vw] w-full flex-none lg:h-full flex flex-col justify-center px-6 md:px-16 pt-20 lg:pt-0 pb-10 lg:pb-0">
               <Howitworkstitle/>
             </div>
 
-            <div className="h-full flex items-center pr-20">
+            <div className="lg:h-full flex lg:items-center lg:pr-20 w-full px-6 lg:px-0 pb-32 lg:pb-0">
                 <Howitworksslider/>
             </div>
             

@@ -7,6 +7,7 @@ import Hero from './sections/HeroSection'
 import BuiltForSection from './sections/BuiltForSection'
 import WhatItDoesSection from './sections/WhatItDoesSection';
 import HowItWorksSection from './sections/HowItWorksSection';
+import BookDemoSection from './sections/BookDemoSection';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, ScrollSmoother);
 
@@ -35,6 +36,7 @@ const App = () => {
       <BuiltForSection/>
       <WhatItDoesSection/>
       <HowItWorksSection/>
+      <BookDemoSection/>
       </div>
       </div>
     </main>

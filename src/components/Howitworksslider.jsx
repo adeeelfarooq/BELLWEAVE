@@ -3,8 +3,6 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useMediaQuery } from 'react-responsive'
 
-// ---------- BELLWEAVE 4 STAGES DATA ----------
-// Rotation aur trans hata diye hain taake cards seedhay (straight) aayen
 export const howitworkslists = [
   {
     step: "1.0",
@@ -77,16 +75,15 @@ const Howitworksslider = () => {
     })
 
   return (
-    <div ref={sliderRef} className='slider-wrapper flex items-center h-full pl-10 md:pl-20'>
-        <div className="flavors flex gap-10 md:gap-20 items-center h-full">
+    <div ref={sliderRef} className='slider-wrapper flex lg:items-center lg:h-full w-full lg:pl-10'>
+        {/* 🚀 FIX: flex-col lg:flex-row kiya hai taake mobile par 4 cards vertical line mein dikhain */}
+        <div className="flavors flex flex-col lg:flex-row gap-10 md:gap-20 lg:items-center w-full lg:h-full">
             {
                 howitworkslists.map((flavor)=>(
                     <div 
                         key={flavor.step} 
-                        // Cards ki width/height barhai hai aur -translate-y-12 se card ko thora upar kiya hai
-                        className={`z-30 lg:w-[32vw] w-80 lg:h-[70vh] md:w-[60vw] md:h-[60vh] h-[450px] flex-none relative flex flex-col -translate-y-8 md:-translate-y-4`}
+                        className={`z-30 lg:w-[32vw] w-full max-w-sm mx-auto lg:mx-0 lg:h-[70vh] h-[450px] flex-none relative flex flex-col lg:-translate-y-4`}
                     >
-                        {/* Image section ko h-[65%] kar k images ko pehlay se zyada bara kar diya hai */}
                         <div className="w-full h-[60%] md:h-[65%] rounded-2xl overflow-hidden mb-6 shadow-xl">
                             <img 
                                 src={`/images/${flavor.image}.png`} 
@@ -95,7 +92,6 @@ const Howitworksslider = () => {
                             />
                         </div>
 
-                        {/* Content area */}
                         <div className="flex flex-col flex-1">
                             <span className="text-[#0f6a31] font-black text-2xl mb-1 drop-shadow-md">
                                 {flavor.step}

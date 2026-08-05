@@ -4,6 +4,7 @@ import gsap from "gsap";
 // Ensure you have GSAP Club plugins (SplitText) installed in your project
 import { SplitText, ScrollTrigger } from "gsap/all";
 import { useMediaQuery } from "react-responsive";
+import AnimatedHoverText from "../components/AnimatedHoverText";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -125,30 +126,17 @@ const Hero = () => {
                             Bellweave builds your school's timetable, keeps every teacher, room and class conflict-free, and finds the right cover the moment someone calls in sick — or tells you honestly when no one is available.
                         </h2>
                         
-                        {/* Tech Gooey Button - Adjusted top margin */}
-                        <div className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8">
+                        {/* UPDATED BUTTON: Gooey effects removed, AnimatedLink added, cursor-pointer added */}
+                        <div className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8 cursor-pointer py-4">
                             
-                            <svg className="absolute w-0 h-0">
-                                <filter id="gooey-drips-hero">
-                                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-                                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="gooey" />
-                                </filter>
-                            </svg>
+                            {/* Simple solid background instead of gooey filter */}
+                            <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none"></div>
 
-                            <div 
-                                className="absolute inset-0 pointer-events-none" 
-                                style={{ filter: "url(#gooey-drips-hero)", willChange: "filter" }} 
-                            >
-                                <div className="absolute inset-0 bg-brand-primary rounded-full"></div>
-                                <div className="absolute w-3 h-15 bg-brand-primary rounded-full left-[25%] bottom-0 transition-transform duration-300 ease-in-out group-hover:translate-y-[36px] delay-[225ms]"></div>
-                                <div className="absolute w-4 h-6 bg-brand-primary rounded-full left-[42%] bottom-0 transition-transform duration-300 ease-in-out group-hover:translate-y-[18px] delay-[150ms]"></div>
-                                <div className="absolute w-2 h-9 bg-brand-primary rounded-full left-[60%] bottom-0 transition-transform duration-300 ease-in-out group-hover:translate-y-[24px] delay-[75ms]"></div>
-                                <div className="absolute w-2 h-5 bg-brand-primary rounded-full left-[75%] bottom-0 transition-transform duration-300 ease-in-out group-hover:translate-y-[15px] delay-0"></div>
+                            <div className="relative z-10 text-white font-bold uppercase tracking-widest m-0 px-4">
+                                {/* AnimatedLink component with white hover color to match button theme */}
+                                <AnimatedHoverText text="BOOK A DEMO"  />
                             </div>
 
-                            <p className="relative z-10 text-white font-bold uppercase tracking-widest m-0 px-4">
-                                Book a Demo
-                            </p>
                         </div>
 
                     </div>
