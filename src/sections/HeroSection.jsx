@@ -86,7 +86,7 @@ const Hero = () => {
                 `}
             </style>
 
-            <section id="hero-container" className='bg-milk-yellow'>
+            <section id="hero-container" className='bg-[#0f6a31]'>
                 <div className='hero-container' style={{ willChange: "transform" }}>
                     
                     <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>

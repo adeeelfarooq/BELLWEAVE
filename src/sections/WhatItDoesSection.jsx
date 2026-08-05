@@ -54,33 +54,34 @@ export default function WhatItDoesSection() {
   const line3Ref = useRef(null);
 
   useGSAP(() => {
-    gsap.fromTo(
-      line1Ref.current,
-      { opacity: 0, x: -100 },
-      {
-        opacity: 1, x: 0, duration: 2.2, ease: "power3.out", force3D: true,
-        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", toggleActions: "play none none reverse" },
+    
+    // 🚀 FIX: Heading ki nayi Timeline scrub aur proper percentage ke sath
+    const titleTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 85%", // Yahan se text nikalna shuru hoga
+        end: "top 25%",   // Yahan aakar poora set ho jayega
+        scrub: 1,         // Scroll ke sath attach ho gaya (1 sec smoothing)
       }
+    });
+
+    // xPercent: -100 ka matlab hai text poora left ki taraf chup jayega
+    titleTl.fromTo(line1Ref.current, 
+      { opacity: 0, xPercent: -100 }, 
+      { opacity: 1, xPercent: 0, force3D: true, ease: "power2.out" }
+    )
+    .fromTo(line2Ref.current, 
+      { opacity: 0, xPercent: -100 }, 
+      { opacity: 1, xPercent: 0, force3D: true, ease: "power2.out" }, 
+      "<0.1" // Pichli line ke foran baad nikalna shuru hoga
+    )
+    .fromTo(line3Ref.current, 
+      { opacity: 0, xPercent: -100 }, 
+      { opacity: 1, xPercent: 0, force3D: true, ease: "power2.out" }, 
+      "<0.1"
     );
 
-    gsap.fromTo(
-      line2Ref.current,
-      { opacity: 0, x: -80 },
-      {
-        opacity: 1, x: 0, duration: 2.2, delay: 0.15, ease: "power3.out", force3D: true,
-        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", toggleActions: "play none none reverse" },
-      }
-    );
-
-    gsap.fromTo(
-      line3Ref.current,
-      { opacity: 0, x: -60 },
-      {
-        opacity: 1, x: 0, duration: 1.2, delay: 0.3, ease: "power3.out", force3D: true,
-        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", toggleActions: "play none none reverse" },
-      }
-    );
-
+    // Cards Setup
     cardConfig.forEach((cfg, i) => {
       const outer = outerRefs.current[i];
       const inner = innerRefs.current[i];
@@ -104,6 +105,7 @@ export default function WhatItDoesSection() {
       });
     });
 
+    // Cards Animation
     cardConfig.forEach((cfg, i) => {
       const outer = outerRefs.current[i];
       if (!outer) return;
@@ -175,7 +177,6 @@ export default function WhatItDoesSection() {
     <section
       ref={sectionRef}
       className="relative bg-[#F0E9DD] w-full h-screen overflow-hidden flex flex-col lg:block"
-    //   style={{ backgroundColor: COLORS.bg, color: COLORS.text }}
     >
       {/* Ambient glow */}
       <div
@@ -184,7 +185,7 @@ export default function WhatItDoesSection() {
       ></div>
       <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
 
-      {/* TOP-LEFT HEADING — exact content: "What it actually does." */}
+      {/* TOP-LEFT HEADING */}
       <div className="relative lg:absolute top-0 lg:top-10 left-0 lg:left-16 z-20 max-w-md px-6 pt-8 lg:pt-0 lg:px-0 text-center lg:text-left mx-auto lg:mx-0 shrink-0">
         <div className="mb-2">
           <div className="overflow-hidden mb-1">
@@ -209,7 +210,7 @@ export default function WhatItDoesSection() {
         </div>
       </div>
 
-      {/* CENTER — FANNED CARD DECK, always centered within whatever space remains inside the single screen */}
+      {/* CENTER — FANNED CARD DECK */}
       <div
         ref={stackWrapperRef}
         className="relative z-10 w-full flex-1 min-h-0 flex items-center justify-center lg:h-full"

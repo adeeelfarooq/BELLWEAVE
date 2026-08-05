@@ -4,7 +4,7 @@ import Howitworksslider from '../components/Howitworksslider'
 
 const HowItWorksSection = () => {
   return (
-    <section className='flavor-section max-md:mb-20 overflow-hidden bg-[#FAF6EF] text-[#0f172a] relative'>
+    <section className='flavor-section overflow-hidden bg-[#FAF6EF] text-[#0f172a] relative'>
         
         {/* PINNED BUTTON */}
         <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
