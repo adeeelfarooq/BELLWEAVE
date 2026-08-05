@@ -2,11 +2,11 @@ import React from 'react'
 import { ScrollSmoother, ScrollToPlugin, ScrollTrigger } from 'gsap/all';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import BuiltForSection from './components/Solutions'
-import WhatItDoesSection from './components/Whatitdoes';
-import HowItWorksSection from './components/HowItWorks';
+import Navbar from './sections/NavbarSection'
+import Hero from './sections/HeroSection'
+import BuiltForSection from './sections/BuiltForSection'
+import WhatItDoesSection from './sections/WhatItDoesSection';
+import HowItWorksSection from './sections/HowItWorksSection';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, ScrollSmoother);
 

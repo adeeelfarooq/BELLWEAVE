@@ -43,9 +43,9 @@ const Howitworkstitle = () => {
     <div className='flex flex-col justify-center h-full w-full max-w-lg'>
       
       {/* Title Animation Setup */}
-      <div className='text-5xl md:text-7xl xl:text-[7.5rem] font-black uppercase tracking-tight flex flex-col items-start gap-2 md:gap-4'>
+      <div className='text-5xl md:text-7xl xl:text-[7.5rem] font-black uppercase tracking-tight flex flex-col items-center gap-2 md:gap-4'>
         <div className="overflow-hidden py-1 first-text-split">
-          <h1>How</h1>
+          <h1 className='text-[#0f172a]'>How</h1>
         </div>
         
         {/* Accent Color Background Box */}
@@ -53,31 +53,21 @@ const Howitworkstitle = () => {
           style={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)" }} 
           className="flavor-text-scroll -rotate-3"
         >
-          <div className="bg-[#0f6a31] px-4 py-1 md:px-6 md:py-2">
+          <div className="bg-[#0f6a31] flex justify-center items-center px-4 py-1 md:px-6 md:py-2">
               <h2 className='text-[#FAF6EF]'>It</h2>
           </div>
         </div>
         
         <div className="overflow-hidden py-1 second-text-split">
-          <h1>Works.</h1>
+          <h1 className='text-[#0f172a]'>Works.</h1>
         </div>
       </div>
 
-      {/* Intro Text & CTA (As per provided content) */}
-      <div className="mt-10 md:mt-16">
-        <p className="text-sm md:text-lg text-[#FAF6EF]/70 font-medium leading-relaxed mb-6">
+      {/* Intro Text (Button removed from here) */}
+      <div className="mt-10 md:mt-16 text-center">
+        <p className="text-sm md:text-lg text-gray-500 font-medium leading-relaxed mb-6">
           Four stages, one system. The full mechanism — including the thirteen rules it will never break — lives on the features page.
         </p>
-        
-        <a href="#" className="group inline-flex items-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
-          <span className="relative">
-            Read the full walkthrough
-            <span className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-[#0f6a31]"></span>
-          </span>
-          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
       </div>
 
     </div>

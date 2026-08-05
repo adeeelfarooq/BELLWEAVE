@@ -1,0 +1,38 @@
+import React from 'react'
+import Howitworkstitle from '../components/Howitworkstitle'
+import Howitworksslider from '../components/Howitworksslider'
+
+const HowItWorksSection = () => {
+  return (
+    // 'relative' add kiya hai taake absolute button iske hisaab se pin ho
+    <section className='flavor-section max-md:mb-20 overflow-hidden bg-[#FAF6EF] text-[#0f172a] relative'>
+        
+        {/* PINNED BUTTON - Ye button ab hamesha yahan pinned rahega jab tak section scroll hoga */}
+        <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
+            <a href="#" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
+                <span className="relative">
+                    Read the full walkthrough
+                    <span className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-[#0f6a31]"></span>
+                </span>
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </a>
+        </div>
+
+        <div className="horizontal-scroll-container h-screen flex lg:flex-row flex-col items-center relative w-[max-content]">
+            
+            <div className="lg:w-[45vw] w-screen flex-none h-80 lg:h-full flex flex-col justify-center px-6 md:px-16 pt-20 md:pt-0">
+              <Howitworkstitle/>
+            </div>
+
+            <div className="h-full flex items-center pr-20">
+                <Howitworksslider/>
+            </div>
+            
+        </div>
+    </section>
+  )
+}
+
+export default HowItWorksSection
