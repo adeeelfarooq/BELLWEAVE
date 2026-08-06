@@ -1,12 +1,6 @@
-import React, { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
+import React from 'react';
 import PageContainer from '../components/PageContainer';
 
-gsap.registerPlugin(ScrollTrigger);
-
-// 🚀 Data for 13 Hard Constraints
 const hardRules = [
     { id: "H1", text: "A teacher is in at most one session per (date, period)." },
     { id: "H2", text: "A room hosts at most one session per (date, period)." },
@@ -23,7 +17,6 @@ const hardRules = [
     { id: "H13", text: "A multi-period session occupies consecutive teaching periods, with one room and one teacher." },
 ];
 
-// 🚀 Data for 4 Soft Goals
 const softGoals = [
     { id: "S1", text: "Balance teacher load evenly across the week." },
     { id: "S2", text: "Spread a subject across the week rather than clustering it on one day." },
@@ -32,87 +25,8 @@ const softGoals = [
 ];
 
 const FeatureStageTwo = () => {
-    const sectionRef = useRef(null);
-
-    useGSAP(() => {
-        // UI Card Parallax Animation
-        gsap.fromTo(".ui-card-stage-2", 
-            { opacity: 0, y: 60, scale: 0.98 },
-            { 
-                opacity: 1, 
-                y: 0, 
-                scale: 1,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%",
-                }
-            }
-        );
-
-        // Floating Parallax effect
-        gsap.to(".ui-card-stage-2", {
-            y: -40,
-            ease: "none",
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1
-            }
-        });
-
-        // Text Fade Up Animation
-        gsap.fromTo(".text-reveal-2",
-            { opacity: 0, y: 40 },
-            {
-                opacity: 1,
-                y: 0,
-                stagger: 0.1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%",
-                }
-            }
-        );
-
-        // Grid Cards (13 Rules) Reveal Animation
-        gsap.fromTo(".rule-card",
-            { opacity: 0, y: 30, scale: 0.95 },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                stagger: 0.05,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: ".rules-grid",
-                    start: "top 80%",
-                }
-            }
-        );
-        
-        // Soft Goals Reveal
-        gsap.fromTo(".soft-goal-card",
-            { opacity: 0, y: 30 },
-            {
-                opacity: 1,
-                y: 0,
-                stagger: 0.1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: ".soft-goals-grid",
-                    start: "top 85%",
-                }
-            }
-        );
-    }, { scope: sectionRef });
-
     return (
-        // 🚀 FIX: Exact Background Match with Stage 1.0 (Grid + Milk Yellow)
-        <section id="stage-publish" ref={sectionRef} className="relative w-full bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5">
+        <section id="stage-publish" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform">
             
             {/* Background Grid & Glows */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
@@ -123,9 +37,8 @@ const FeatureStageTwo = () => {
                 
                 {/* 🚀 TOP PART: Intro & Feasibility Report Card */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
-                    
-                    {/* LEFT COLUMN: TEXT CONTENT */}
                     <div className="lg:col-span-6 flex flex-col gap-5 lg:pr-8">
+                        {/* 🚀 FIX: Removed manual opacity-0, GSAP will handle it dynamically */}
                         <span className="text-reveal-2 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max">
                             2.0
                         </span>
@@ -135,33 +48,19 @@ const FeatureStageTwo = () => {
                         </h2>
                         
                         <div className="text-reveal-2 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed">
-                            <p>
-                                Generation runs per campus, per term. What comes back is a draft — and a list of everything it refused to do.
-                            </p>
-                            <p>
-                                <strong className="text-[#0f172a]">The generator cannot break a hard rule. Not quietly, not loudly, not at all.</strong>
-                            </p>
-                            <p>
-                                That sentence is the whole product. There are thirteen hard constraints. They are not preferences, and they are not weighted — they hold, or the slot stays empty.
-                            </p>
-                            <p>
-                                When everything cannot be satisfied at once, Bellweave does not quietly produce a timetable that looks fine and isn’t. It leaves the period unassigned, flags it, and tells you exactly what it collided with.
-                            </p>
-                            <p>
-                                <strong className="text-[#0f172a]">Only a human may waive a hard rule</strong> — and only with a recorded reason, naming which rules were waived. There is no other door.
-                            </p>
+                            <p>Generation runs per campus, per term. What comes back is a draft — and a list of everything it refused to do.</p>
+                            <p><strong className="text-[#0f172a]">The generator cannot break a hard rule. Not quietly, not loudly, not at all.</strong></p>
+                            <p>That sentence is the whole product. There are thirteen hard constraints. They are not preferences, and they are not weighted — they hold, or the slot stays empty.</p>
+                            <p>When everything cannot be satisfied at once, Bellweave does not quietly produce a timetable that looks fine and isn’t. It leaves the period unassigned, flags it, and tells you exactly what it collided with.</p>
+                            <p><strong className="text-[#0f172a]">Only a human may waive a hard rule</strong> — and only with a recorded reason, naming which rules were waived. There is no other door.</p>
                         </div>
                     </div>
 
                     {/* RIGHT COLUMN: PREMIUM FEASIBILITY REPORT CARD */}
                     <div className="lg:col-span-6 relative w-full flex justify-center lg:justify-end">
-                        
-                        {/* 🚀 FIX: Clean, White, Shadow-2xl Luxury Box */}
                         <div className="ui-card-stage-2 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden">
-                            
                             <div className="absolute -top-32 -right-32 w-64 h-64 bg-red-500/5 rounded-full blur-[80px] pointer-events-none"></div>
 
-                            {/* Header */}
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">
                                 <h3 className="font-bold text-[#0f172a] tracking-wide text-sm">Feasibility report <span className="font-medium text-gray-400">· one unplaced period</span></h3>
                                 <div className="flex gap-2 items-center bg-red-50 px-3 py-1.5 rounded-full border border-red-100 shadow-sm">
@@ -171,13 +70,11 @@ const FeatureStageTwo = () => {
                             </div>
 
                             <div className="flex flex-col gap-5 relative z-10">
-                                
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                     <span className="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-red-100 w-max">Unassigned</span>
                                     <h4 className="text-sm font-bold text-[#0f172a]">Grade-9 Chemistry <span className="font-medium text-gray-400">— period 3 unplaced</span></h4>
                                 </div>
 
-                                {/* Clean Code-like Error Box */}
                                 <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-[13px] font-medium text-gray-600 leading-relaxed shadow-sm">
                                     “Grade-9 Chemistry needs a chem-lab in period 3, but the only chem-lab room is already taken by 10-B chemistry.”
                                 </div>
@@ -189,7 +86,6 @@ const FeatureStageTwo = () => {
                                     <span className="bg-[#0f6a31]/10 text-[#0f6a31] px-2 py-0.5 rounded uppercase font-bold text-[11px] border border-[#0f6a31]/20">H2</span>
                                     <span>).</span>
                                 </div>
-
                             </div>
 
                             <div className="mt-2 pt-5 border-t border-gray-100 flex gap-3 items-start relative z-10">
@@ -200,14 +96,12 @@ const FeatureStageTwo = () => {
                                     Every unplaced period comes back with a diagnosed reason written like this one. Not a shrug. <strong className="text-[#0f172a]">The sentence that tells you what to go and fix.</strong>
                                 </p>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                {/* 🚀 MIDDLE PART: The 13 Hard Constraints (Clean Luxury Grid) */}
+                {/* 🚀 MIDDLE PART: The 13 Hard Constraints */}
                 <div className="flex flex-col gap-10 lg:gap-14">
-                    
                     <div className="text-reveal-2 text-center max-w-2xl mx-auto flex flex-col gap-2">
                         <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-[#0f172a]">
                             The thirteen. Never violated.
@@ -231,9 +125,8 @@ const FeatureStageTwo = () => {
                     </div>
                 </div>
 
-                {/* 🚀 BOTTOM PART: The 4 Soft Goals (Frosted Dashed Design) */}
+                {/* 🚀 BOTTOM PART: The 4 Soft Goals */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mt-6">
-                    
                     <div className="lg:col-span-5 flex flex-col gap-5 text-reveal-2 lg:pr-8">
                         <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-[#0f172a] leading-[1.1]">
                             Four soft goals bend.<br/> The thirteen do not.
@@ -272,7 +165,7 @@ const FeatureStageTwo = () => {
 
             </PageContainer>
         </section>
-    )
-}
+    );
+};
 
 export default FeatureStageTwo;

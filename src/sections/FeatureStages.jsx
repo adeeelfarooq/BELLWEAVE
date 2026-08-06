@@ -4,11 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FeatureHero from './FeaturesHero';
 import FeatureStageOne from './FeatureStageOne';
-
-// Import newly created separate components
-
-// Future imports aise hi ayenge:
-// import FeatureStageTwo from './FeatureStageTwo'; 
+import FeatureStageTwo from './FeatureStageTwo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,11 +41,11 @@ const FeatureStages = () => {
 
         let hasPlayed = false;
 
-        // 4. The Perfect Pin Trigger (ScrollSmoother Safe)
+        // 4. The Perfect Pin Trigger for Stage 1
         ScrollTrigger.create({
             trigger: containerRef.current,
             start: "top top", 
-            end: "+=400", // Future mein Stage 2 k liye ise barhayenge
+            end: "+=400", 
             pin: true, 
             anticipatePin: 1, 
             onUpdate: (self) => {
@@ -64,21 +60,61 @@ const FeatureStages = () => {
             }
         });
 
-    }, { scope: containerRef }); // Scope is extremely important here! It targets classes in child components
+        // ==========================================
+        // 🚀 5. STAGE 2 NORMAL SCROLL ANIMATIONS
+        // ==========================================
+        
+        // Text headings & paragraphs fade up on scroll
+        gsap.utils.toArray(".text-reveal-2").forEach((elem) => {
+            gsap.fromTo(elem,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%" }
+                }
+            );
+        });
+
+        // Main Luxury Card fade up
+        gsap.fromTo(".ui-card-stage-2",
+            { opacity: 0, y: 60, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out",
+              scrollTrigger: { trigger: ".ui-card-stage-2", start: "top 85%" }
+            }
+        );
+
+        // 13 Rules Grid cascade animation
+        gsap.fromTo(".rule-card",
+            { opacity: 0, y: 30, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.6, ease: "power2.out",
+              scrollTrigger: { trigger: ".rules-grid", start: "top 85%" }
+            }
+        );
+
+        // 4 Soft Goals cascade animation
+        gsap.fromTo(".soft-goal-card",
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: "power2.out",
+              scrollTrigger: { trigger: ".soft-goals-grid", start: "top 85%" }
+            }
+        );
+
+    }, { scope: containerRef }); 
 
     return (
         <div ref={containerRef} className="relative w-full overflow-hidden bg-brand-dark">
             <div className="grid grid-cols-1 grid-rows-1 w-full relative">
                 
                 {/* HERO COMPONENT */}
-               <FeatureHero/>
-               <FeatureStageOne/>
-
-                {/* FUTURE STAGES: */}
-                {/* <FeatureStageTwo /> */}
-                {/* <FeatureStageThree /> */}
-                
+               <FeatureHero />
+               
+               {/* STAGE 1 COMPONENT */}
+               <FeatureStageOne />
+               
             </div>
+            
+            {/* 🚀 STAGE 2 COMPONENT (Normal Flow below Stage 1) */}
+            <FeatureStageTwo />
+            
         </div>
     );
 };

@@ -37,7 +37,7 @@ const FeaturesPage = () => {
           
           {/* Yahan baad mein hum Stage 2, 3, aur 4 lagayenge */}
           
-          <Footer />
+          
         </div>
       </div>
     </main>
