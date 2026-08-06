@@ -1,18 +1,20 @@
 import React from 'react'
+// 🚀 FIX: React Router se Link import kiya hai
+import { Link } from 'react-router-dom'
 import Howitworkstitle from '../components/Howitworkstitle'
 import Howitworksslider from '../components/Howitworksslider'
 
 const HowItWorksSection = () => {
   return (
-    // 🚀 FIX: 'w-full' add kiya taake full width rahay
     <section className='flavor-section overflow-hidden bg-[#FAF6EF] text-[#0f172a] relative w-full'>
         
-        {/* 🚀 FIX: Navbar ki tarah Master Container add kiya taake bari screens par content center me locked rahay */}
         <div className="w-full max-w-[1536px] mx-auto relative">
             
             {/* PINNED BUTTON */}
             <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
-                <a href="#" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
+                
+                {/* 🚀 FIX: 'a' tag ko 'Link' se badal diya aur 'href' ki jagah 'to="/features"' laga diya */}
+                <Link to="/features" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
                     <span className="relative whitespace-nowrap">
                         Read the full walkthrough
                         <span className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-[#0f6a31]"></span>
@@ -20,7 +22,8 @@ const HowItWorksSection = () => {
                     <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                </a>
+                </Link>
+
             </div>
 
             <div className="horizontal-scroll-container lg:h-screen min-h-screen flex lg:flex-row flex-col lg:items-center relative lg:w-[max-content] w-full">
