@@ -38,20 +38,33 @@ const Howitworksslider = () => {
         const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
 
         if(!isTablet){
+            
+            // 🚀 FIX: Pin distance ko overlap k liye manage kiya hai
+            const scrollDistance = scrollAmount + 1200; // Asal scroll ki length
+            const holdPinDistance = window.innerHeight + 400; // BookDemo ko upar anay ka extra time dene k liye
+
             const tL = gsap.timeline({
                 scrollTrigger:{
                     trigger: ".flavor-section",
                     start: "top top", 
                     pin: true,
-                    end: `+=${scrollAmount + 1200}px`,
+                    // end point barha diya taake overlap ki jagah mil jaye
+                    end: `+=${scrollDistance + holdPinDistance}px`, 
                     scrub: 1,
                 }
             })
             
+            // Step 1: Slider horizontal scroll hoga
             tL.to(".horizontal-scroll-container" , {
                 x: `-${scrollAmount + 700}px`, 
                 ease: "none", 
+                duration: scrollDistance // Ratio set kiya taake animation perfectly speed mein ho
             })
+            
+            // Step 2: 🚀 THE MAGIC HOLD! (Empty tween) 
+            // Jab slider end par pohanch jayega, toh ye section hilega nahi balky pinned rahega
+            // is extra duration ke dauran agla BookDemo section overlaps karta hua upar aa jayega!
+            tL.to({}, { duration: holdPinDistance });
         }
         
         const titleTl = gsap.timeline({
@@ -76,7 +89,6 @@ const Howitworksslider = () => {
 
   return (
     <div ref={sliderRef} className='slider-wrapper flex lg:items-center lg:h-full w-full lg:pl-10'>
-        {/* 🚀 FIX: flex-col lg:flex-row kiya hai taake mobile par 4 cards vertical line mein dikhain */}
         <div className="flavors flex flex-col lg:flex-row gap-10 md:gap-20 lg:items-center w-full lg:h-full">
             {
                 howitworkslists.map((flavor)=>(

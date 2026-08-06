@@ -19,6 +19,14 @@ const BookDemoSection = () => {
     };
 
     useGSAP(() => {
+        
+        // 🚀 FIX: Overlap Effect Here! (Pichle section k upar slide karke aayega)
+        gsap.set(sectionRef.current, {
+            
+            marginTop: "-100dvh", // Is value ko aap -20vh ya -30vh kar sakte hain agar aur zyada upar chadhaana ho
+            zIndex: 50, // Z-index zaroori hai taake ye pichle section k uper dikhay, uske neechay na chup jaye
+        });
+
         gsap.fromTo(textRef.current.children, 
             { opacity: 0, y: 40 },
             { 
@@ -70,7 +78,7 @@ const BookDemoSection = () => {
     }, { scope: sectionRef });
 
     return (
-        // 🚀 FIX: h-screen ki jagah properly min-h-screen lagaya aur lg:py-0 hata diya taake height choti hone pe kate nahi.
+        // ❌ Koi classes/UI change nahi kiye gaye ❌
         <section id='book-demo' ref={sectionRef}  className="relative w-full min-h-screen flex items-center bg-[#0f172a] text-[#FAF6EF] py-16 px-6 md:px-14 overflow-x-hidden">
             
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -82,7 +90,6 @@ const BookDemoSection = () => {
                 
                 <div ref={textRef} className="w-full lg:w-5/12 flex flex-col gap-3 lg:gap-5 text-center lg:text-left shrink-0">
                     
-                    {/* 🚀 FIX: Text size thora chota kiya taake fit ajaye */}
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tight leading-[1.05] text-transparent bg-clip-text bg-gradient-to-r from-[#0f6a31] to-emerald-400">
                         Book a <br />
                         Demo.
@@ -93,7 +100,6 @@ const BookDemoSection = () => {
                     </p>
                 </div>
 
-                {/* 🚀 FIX: scale-80 hata diya kyunke standard tailwind me nahi hota aur layout break karta hai, iski jagah internal padding kam ki hai */}
                 <div className="w-full lg:w-7/12 max-w-2xl mx-auto flex-1 min-h-0">
                     <div ref={formRef} className="bg-[#FAF6EF] rounded-3xl p-5 lg:p-7 shadow-2xl relative w-full">
                         
