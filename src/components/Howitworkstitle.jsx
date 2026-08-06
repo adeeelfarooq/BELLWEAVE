@@ -4,7 +4,6 @@ import gsap from 'gsap'
 import { SplitText } from 'gsap/all'
 
 const Howitworkstitle = () => {
-    // 🚀 FIX: Local reference banaya taake mobile par trigger hamesha sahi jagah se pakray
     const containerRef = useRef(null);
 
     useGSAP(()=>{
@@ -16,8 +15,8 @@ const Howitworkstitle = () => {
             stagger: 0.02,
             ease: "power1.inOut",
             scrollTrigger:{
-                trigger: containerRef.current, // Local trigger
-                start: "top 85%", // Mobile k hisaab se early start
+                trigger: containerRef.current, 
+                start: "top 85%", 
             }
         })
 

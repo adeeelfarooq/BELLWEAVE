@@ -38,41 +38,43 @@ const Howitworksslider = () => {
     const sliderRef = useRef();
 
     useGSAP(()=>{
-        const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
-
         if(!isTablet){
             
-            // 🚀 DESKTOP (No changes - perfectly working)
-            const scrollDistance = scrollAmount + 1200; 
-            const holdPinDistance = window.innerHeight + 400; 
+            const getScrollMove = () => {
+                const container = document.querySelector('.horizontal-scroll-container');
+                if(!container) return 0;
+                const move = container.scrollWidth - container.parentElement.offsetWidth + 150;
+                return move > 0 ? move : 0;
+            };
+
+            const getHoldTime = () => window.innerHeight + 400;
 
             const tL = gsap.timeline({
                 scrollTrigger:{
                     trigger: ".flavor-section",
                     start: "top top", 
                     pin: true,
-                    end: `+=${scrollDistance + holdPinDistance}px`, 
+                    end: () => `+=${getScrollMove() + getHoldTime()}px`, 
                     scrub: 1,
+                    invalidateOnRefresh: true, 
                 }
             })
             
             tL.to(".horizontal-scroll-container" , {
-                x: `-${scrollAmount + 700}px`, 
+                x: () => `-${getScrollMove()}px`, 
                 ease: "none", 
-                duration: scrollDistance 
+                duration: () => getScrollMove() || 1 
             })
             
-            tL.to({}, { duration: holdPinDistance });
+            tL.to({}, { duration: () => getHoldTime() || 1 });
             
         } else {
             
-            // 🚀 FIX: MOBILE OVERLAP LOGIC (Footer Bug Fixed!)
-            // Ab default Pin behaviour on hai jis se BookDemo ka marginTop Footer ko nahi khainchay ga.
             ScrollTrigger.create({
-                trigger: ".flavor-section", // Pura section target kiya
+                trigger: ".flavor-section", 
                 start: "bottom bottom", 
-                pin: true, // Default pinSpacing true rahega
-                end: () => `+=${window.innerHeight}`, // Exact 1 screen overlap k liye jagah
+                pin: true, 
+                end: () => `+=${window.innerHeight}`, 
                 invalidateOnRefresh: true,
             });
         }
@@ -98,14 +100,15 @@ const Howitworksslider = () => {
     })
 
   return (
-    // 🚀 FIX: `pb-[100dvh]` hata diya taake height naturally manage ho
-    <div ref={sliderRef} className='slider-wrapper flex lg:items-center lg:h-full w-full lg:pl-10'>
+    <div ref={sliderRef} className='slider-wrapper flex lg:items-center mt-10 lg:h-full w-full lg:pl-10'>
         <div className="flavors flex flex-col lg:flex-row gap-10 md:gap-20 lg:items-center w-full lg:h-full">
             {
                 howitworkslists.map((flavor)=>(
+                    // 🚀 FIX: 'lg:w-[32vw]' aur 'lg:h-[70vh]' hata kar exact max-widths (max-w-[380px]) aur fixed height lagayi hai.
+                    // Is se image aur card ka design kisi bhi screen par distort ya kharab nahi hoga, hamesha MD/Mobile jaisa perfect wide rahega.
                     <div 
                         key={flavor.step} 
-                        className={`z-30 lg:w-[32vw] w-full max-w-sm mx-auto lg:mx-0 lg:h-[70vh] h-[450px] flex-none relative flex flex-col lg:-translate-y-4`}
+                        className={`z-30 w-full max-w-sm lg:max-w-[380px] xl:max-w-[420px] mx-auto lg:mx-0 h-[450px] lg:h-[500px] flex-none relative flex flex-col lg:-translate-y-4`}
                     >
                         <div className="w-full h-[60%] md:h-[65%] rounded-2xl overflow-hidden mb-6 shadow-xl">
                             <img 
