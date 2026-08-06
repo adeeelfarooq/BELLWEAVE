@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
+
+// 🚀 FIX: ScrollTrigger register karna zaroori hai
+gsap.registerPlugin(ScrollTrigger);
 
 const NavBar = () => {
+    // 🚀 FIX: Logo ko target karne ke liye ref banaya
+    const logoRef = useRef(null);
+
+    useGSAP(() => {
+        // 🚀 THE MAGIC: Jab #book-demo section screen ke top par aayega, logo white ho jayega
+        ScrollTrigger.create({
+            trigger: "#book-demo", // Ye dark sections ki shuruwat hai
+            start: "top 5%", // Jab section navbar ke bilkul peeche pohnchay
+            onEnter: () => gsap.to(logoRef.current, { filter: "brightness(0) invert(1)", duration: 0.3 }), // Safed (White) kar do
+            onLeaveBack: () => gsap.to(logoRef.current, { filter: "none", duration: 0.3 }), // Wapis upar janay pe normal kar do
+        });
+    });
+
     return (
         <>
             {/* FLOATING CTA BUTTON (Top Right) */}
@@ -17,6 +36,7 @@ const NavBar = () => {
                 {/* pointer-events-auto button/logo ko clickable banata hai */}
                 <a href="/" className="pointer-events-auto block group">
                     <img 
+                        ref={logoRef} // 🚀 FIX: Ref attach kiya taake GSAP ispe effect laga sakay
                         src="/images/Bellweave.webp" 
                         alt="Bellweave Logo" 
                         className="md:h-9 h-7 w-auto object-contain drop-shadow-sm group-hover:opacity-70 transition-all duration-300" 
