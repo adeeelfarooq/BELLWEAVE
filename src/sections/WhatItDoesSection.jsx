@@ -55,17 +55,16 @@ export default function WhatItDoesSection() {
 
   useGSAP(() => {
     
-    // 🚀 FIX: Heading ki nayi Timeline scrub aur proper percentage ke sath
+    // Heading GSAP - No changes
     const titleTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 85%", // Yahan se text nikalna shuru hoga
-        end: "top 25%",   // Yahan aakar poora set ho jayega
-        scrub: 1,         // Scroll ke sath attach ho gaya (1 sec smoothing)
+        start: "top 85%", 
+        end: "top 25%",   
+        scrub: 1,         
       }
     });
 
-    // xPercent: -100 ka matlab hai text poora left ki taraf chup jayega
     titleTl.fromTo(line1Ref.current, 
       { opacity: 0, xPercent: -100 }, 
       { opacity: 1, xPercent: 0, force3D: true, ease: "power2.out" }
@@ -73,7 +72,7 @@ export default function WhatItDoesSection() {
     .fromTo(line2Ref.current, 
       { opacity: 0, xPercent: -100 }, 
       { opacity: 1, xPercent: 0, force3D: true, ease: "power2.out" }, 
-      "<0.1" // Pichli line ke foran baad nikalna shuru hoga
+      "<0.1" 
     )
     .fromTo(line3Ref.current, 
       { opacity: 0, xPercent: -100 }, 
@@ -176,7 +175,8 @@ export default function WhatItDoesSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#F0E9DD] w-full h-screen overflow-hidden flex flex-col lg:block"
+      // 🚀 FIX: Flex lagaya taake andhar wala grid center me aye
+      className="relative bg-[#F0E9DD] w-full min-h-screen lg:h-screen overflow-hidden flex items-center"
     >
       {/* Ambient glow */}
       <div
@@ -185,88 +185,93 @@ export default function WhatItDoesSection() {
       ></div>
       <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
 
-      {/* TOP-LEFT HEADING */}
-      <div className="relative lg:absolute top-0 lg:top-10 left-0 lg:left-16 z-20 max-w-md px-6 pt-8 lg:pt-0 lg:px-0 text-center lg:text-left mx-auto lg:mx-0 shrink-0">
-        <div className="mb-2">
-          <div className="overflow-hidden mb-1">
-            <h1 ref={line1Ref} className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-none opacity-0">
-              What it
-            </h1>
-          </div>
-          <div className="overflow-hidden mb-1">
-            <h2
-              ref={line2Ref}
-              className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight leading-none opacity-0"
-              style={{ color: COLORS.gold }}
-            >
-              Actually
-            </h2>
-          </div>
-          <div className="overflow-hidden">
-            <h3 ref={line3Ref} className="text-xl sm:text-2xl lg:text-4xl font-black uppercase tracking-tight leading-none opacity-0">
-              Does.
-            </h3>
-          </div>
-        </div>
-      </div>
-
-      {/* CENTER — FANNED CARD DECK */}
-      <div
-        ref={stackWrapperRef}
-        className="relative z-10 w-full flex-1 min-h-0 flex items-center justify-center lg:h-full"
-      >
-        <div className="relative w-[240px] sm:w-[280px] h-[420px] sm:h-[480px]">
-          {featuresData.map((f, i) => (
-            <div
-              key={f.id}
-              ref={(el) => (outerRefs.current[i] = el)}
-              onMouseEnter={() => handleEnter(i)}
-              onMouseLeave={() => handleLeave(i)}
-              className="absolute top-0 left-0 w-full h-[260px] sm:h-[300px] cursor-pointer"
-            >
-              <div
-                ref={(el) => (innerRefs.current[i] = el)}
-                className="w-full h-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 will-change-transform flex flex-col"
-                style={{
-                  backgroundColor: COLORS.cardBg,
-                  color: COLORS.cardText,
-                }}
-              >
-                <span
-                  className="block text-2xl sm:text-3xl font-extralight leading-none mb-2 sm:mb-3"
-                  style={{ color: COLORS.gold }}
-                >
-                  {f.id}
-                </span>
-
-                <h3 className="text-base sm:text-lg font-bold leading-snug tracking-tight mb-2">
-                  {f.title}
-                </h3>
-
-                <p className="text-[11px] sm:text-xs leading-relaxed mb-3" style={{ color: "rgba(33,29,26,0.65)" }}>
-                  {f.desc}
-                </p>
-
-                <a
-                  href="#"
-                  className="group mt-auto inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-wide"
-                  style={{ color: COLORS.gold }}
-                >
-                  <span className="relative">
-                    {f.link}
-                    <span
-                      className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-                      style={{ backgroundColor: COLORS.gold }}
-                    ></span>
-                  </span>
-                  <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-              </div>
+      {/* 🚀 FIX: Master Grid Container (Left = Text, Right = Cards) */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center px-6 md:px-14 h-full pt-20 lg:pt-0">
+        
+        {/* LEFT COLUMN: HEADING */}
+        <div className="w-full max-w-md text-center lg:text-left mx-auto lg:mx-0 shrink-0">
+          <div className="mb-2">
+            <div className="overflow-hidden mb-1">
+              <h1 ref={line1Ref} className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-none opacity-0">
+                What it
+              </h1>
             </div>
-          ))}
+            <div className="overflow-hidden mb-1">
+              <h2
+                ref={line2Ref}
+                className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight leading-none opacity-0"
+                style={{ color: COLORS.gold }}
+              >
+                Actually
+              </h2>
+            </div>
+            <div className="overflow-hidden">
+              <h3 ref={line3Ref} className="text-xl sm:text-2xl lg:text-4xl font-black uppercase tracking-tight leading-none opacity-0">
+                Does.
+              </h3>
+            </div>
+          </div>
         </div>
+
+        {/* RIGHT COLUMN: FANNED CARD DECK */}
+        <div
+          ref={stackWrapperRef}
+          className="w-full flex items-center justify-center lg:justify-end lg:pr-12 pb-20 lg:pb-0"
+        >
+          <div className="relative w-[240px] sm:w-[280px] h-[420px] sm:h-[480px]">
+            {featuresData.map((f, i) => (
+              <div
+                key={f.id}
+                ref={(el) => (outerRefs.current[i] = el)}
+                onMouseEnter={() => handleEnter(i)}
+                onMouseLeave={() => handleLeave(i)}
+                className="absolute top-0 left-0 w-full h-[260px] sm:h-[300px] cursor-pointer"
+              >
+                <div
+                  ref={(el) => (innerRefs.current[i] = el)}
+                  className="w-full h-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 will-change-transform flex flex-col"
+                  style={{
+                    backgroundColor: COLORS.cardBg,
+                    color: COLORS.cardText,
+                  }}
+                >
+                  <span
+                    className="block text-2xl sm:text-3xl font-extralight leading-none mb-2 sm:mb-3"
+                    style={{ color: COLORS.gold }}
+                  >
+                    {f.id}
+                  </span>
+
+                  <h3 className="text-base sm:text-lg font-bold leading-snug tracking-tight mb-2">
+                    {f.title}
+                  </h3>
+
+                  <p className="text-[11px] sm:text-xs leading-relaxed mb-3" style={{ color: "rgba(33,29,26,0.65)" }}>
+                    {f.desc}
+                  </p>
+
+                  <a
+                    href="#"
+                    className="group mt-auto inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-wide"
+                    style={{ color: COLORS.gold }}
+                  >
+                    <span className="relative">
+                      {f.link}
+                      <span
+                        className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                        style={{ backgroundColor: COLORS.gold }}
+                      ></span>
+                    </span>
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
