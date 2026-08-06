@@ -1,10 +1,5 @@
-import React, { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
+import React from 'react';
 import PageContainer from '../components/PageContainer';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const standardPeriods = [
     { name: "P1", time: "08:30–09:15", type: "lesson" },
@@ -26,9 +21,8 @@ const halfDayPeriods = [
     { name: "Dismissal", time: "11:45", type: "end" },
 ];
 
-// 🚀 FIX: Premium Light UI Pills 
 const ScheduleBlock = ({ name, time, type }) => {
-    let styles = "bg-white border-gray-200 text-[#0f172a]"; // default lesson
+    let styles = "bg-white border-gray-200 text-[#0f172a]"; 
     let titleColor = "text-[#0f172a]";
     
     if (type === "break") {
@@ -49,58 +43,9 @@ const ScheduleBlock = ({ name, time, type }) => {
 };
 
 const FeatureStageOne = () => {
-    const sectionRef = useRef(null);
-
-    useGSAP(() => {
-        // UI Card Parallax Animation (Fades in sharply and floats up)
-        gsap.fromTo(".ui-card-stage-1", 
-            { opacity: 0, y: 60, scale: 0.98 },
-            { 
-                opacity: 1, 
-                y: 0, 
-                scale: 1,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%",
-                }
-            }
-        );
-
-        // Floating Parallax effect on scroll for the card
-        gsap.to(".ui-card-stage-1", {
-            y: -40,
-            ease: "none",
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1
-            }
-        });
-
-        // Text Fade Up Animation
-        gsap.fromTo(".text-reveal-1",
-            { opacity: 0, y: 40 },
-            {
-                opacity: 1,
-                y: 0,
-                stagger: 0.15,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%",
-                }
-            }
-        );
-    }, { scope: sectionRef });
-
     return (
-        // 🚀 FIX: Exact Hero Section Background (Milk Yellow / Off-white)
-        <section id="stage-build" ref={sectionRef} className="relative w-full bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden">
+        <section id="stage-build" className="stage-1-panel col-start-1 row-start-1 w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 shadow-[-30px_0_60px_rgba(0,0,0,0.3)] relative z-10 will-change-transform">
             
-            {/* 🚀 FIX: Exact Hero Section GRID LINES & GLOW */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/10 blur-[120px] pointer-events-none"></div>
 
@@ -108,15 +53,15 @@ const FeatureStageOne = () => {
                 
                 {/* LEFT COLUMN: TEXT CONTENT */}
                 <div className="lg:col-span-6 flex flex-col gap-6 lg:pr-8">
-                    <span className="text-reveal-1 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max">
+                    <span className="text-reveal-1 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0">
                         1.0
                     </span>
                     
-                    <h2 className="text-reveal-1 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a]">
+                    <h2 className="text-reveal-1 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0">
                         Set up the campus.
                     </h2>
                     
-                    <div className="text-reveal-1 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed">
+                    <div className="text-reveal-1 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0">
                         <p>
                             A timetable is not built out of constants. It is built out of what a campus actually does on a Wednesday.
                         </p>
@@ -146,8 +91,7 @@ const FeatureStageOne = () => {
                 {/* RIGHT COLUMN: LUXURY SAAS CARD */}
                 <div className="lg:col-span-6 relative w-full flex justify-center lg:justify-end">
                     
-                    {/* 🚀 FIX: Premium White BookDemo-style Card */}
-                    <div className="ui-card-stage-1 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden">
+                    <div className="ui-card-stage-1 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0">
                         
                         {/* Subtle inner glow */}
                         <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#0f6a31]/5 rounded-full blur-[80px] pointer-events-none"></div>
@@ -206,7 +150,7 @@ const FeatureStageOne = () => {
 
             </PageContainer>
         </section>
-    )
-}
+    );
+};
 
 export default FeatureStageOne;

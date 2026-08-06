@@ -1,6 +1,4 @@
-import React, { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
+import React from 'react';
 import PageContainer from '../components/PageContainer';
 import AnimatedHoverText from '../components/AnimatedHoverText';
 
@@ -11,65 +9,22 @@ const stages = [
     { num: "4.0", name: "account", link: "#stage-account" },
 ];
 
-const FeaturesHero = () => {
-    const sectionRef = useRef(null);
-
-    useGSAP(() => {
-        const tl = gsap.timeline({ delay: 0.2 });
-
-        // Stages row animation
-        tl.fromTo(".stage-tag", 
-            { opacity: 0, y: 15 },
-            { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
-        )
-        // Main Heading animation (Masked Slide Up)
-        .to(".feature-hero-title-line", {
-            y: "0%", 
-            rotation: 0, 
-            opacity: 1, 
-            duration: 1.2, 
-            stagger: 0.15, 
-            ease: "expo.out"
-        }, "-=0.4")
-        // Description animation
-        .fromTo(".feature-hero-desc", 
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-            "-=0.6"
-        )
-        // Button animation
-        .fromTo(".feature-hero-btn-wrapper",
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-            "-=0.6"
-        );
-
-    }, { scope: sectionRef });
-
+const FeatureHero = () => {
     return (
-        <section ref={sectionRef} className="relative w-full h-dvh flex flex-col justify-center bg-brand-dark text-white overflow-hidden">
-            
-            {/* Ambient Background Glow */}
+        <section id="feature-hero" className="hero-panel col-start-1 row-start-1 self-start w-full h-dvh flex flex-col justify-center text-white overflow-hidden relative z-0">
             <div className="absolute top-[0%] left-[-10%] w-[50%] h-[60%] rounded-full bg-brand-primary/10 blur-[150px] pointer-events-none"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-blue-500/10 blur-[150px] pointer-events-none"></div>
 
             <PageContainer className="z-10 flex flex-col items-center text-center">
-                
-                {/* 🚀 FIX: The 4 Stages Row - Sized down to look neat */}
                 <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-4 md:mb-6 overflow-hidden">
                     {stages.map((stage, i) => (
-                        <a 
-                            href={stage.link}
-                            key={i} 
-                            className="stage-tag group flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer"
-                        >
+                        <a href={stage.link} key={i} className="stage-tag group flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer">
                             <span className="text-brand-primary group-hover:text-emerald-400 transition-colors">{stage.num}</span>
                             <span className="text-gray-400 group-hover:text-white transition-colors">{stage.name}</span>
                         </a>
                     ))}
                 </div>
 
-                {/* HEADING - 🚀 FIX: Exact Hero sizing and BookDemo Gradient applied! */}
                 <div className="mb-2 px-2 flex flex-col items-center">
                     <div className="overflow-hidden py-1">
                         <h1 className="feature-hero-title-line translate-y-[120%] origin-bottom-left rotate-[4deg] opacity-0 will-change-transform !text-[1.8rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] font-black uppercase tracking-tight !leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-[#0f6a31] to-emerald-400 pb-2">
@@ -83,12 +38,10 @@ const FeaturesHero = () => {
                     </div>
                 </div>
 
-                {/* DESCRIPTION - 🚀 FIX: Matched Hero Section description sizing exactly */}
                 <p className="feature-hero-desc text-gray-400 text-center max-w-3xl md:text-lg text-sm leading-relaxed mt-2 px-4 font-medium">
                     Bellweave builds a school’s timetable, then keeps it honest — through the Monday a teacher calls in sick.
                 </p>
 
-                {/* BUTTON - 🚀 FIX: Matched exactly with main Hero button margins and padding */}
                 <div className="feature-hero-btn-wrapper !mt-6 md:!mt-8">
                     <div className="hero-button relative inline-flex items-center justify-center group cursor-pointer py-4 !shadow-none" style={{ boxShadow: 'none' }}>
                         <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none !shadow-none"></div>
@@ -97,10 +50,9 @@ const FeaturesHero = () => {
                         </div>
                     </div>
                 </div>
-
             </PageContainer>
         </section>
     );
 };
 
-export default FeaturesHero;
+export default FeatureHero;

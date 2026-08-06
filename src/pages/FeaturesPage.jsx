@@ -8,6 +8,7 @@ import Navbar from '../sections/NavbarSection';
 import FeaturesHero from '../sections/FeaturesHero';
 import FeatureStageOne from '../sections/FeatureStageOne';
 import Footer from '../sections/Footer';
+import FeatureStages from '../sections/FeatureStages';
 
 const FeaturesPage = () => {
   const pageRef = useRef(null);
@@ -32,8 +33,7 @@ const FeaturesPage = () => {
       
       <div id="smooth-wrapper-features">   
         <div id="smooth-content-features">
-          <FeaturesHero />
-          <FeatureStageOne />
+          <FeatureStages/>
           
           {/* Yahan baad mein hum Stage 2, 3, aur 4 lagayenge */}
           
