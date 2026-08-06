@@ -38,16 +38,25 @@ const Footer = () => {
         // 🚀 OPTIMIZATION: Animation tabhi chalegi jab footer screen par nazar aayega
         ScrollTrigger.create({
             trigger: footerRef.current,
-            start: "top 100%", // Jab footer screen mein enter ho
-            end: "bottom 0%", // Jab footer screen se bahar nikal jaye
-            toggleClass: "is-visible" // Yeh class add/remove karega
+            start: "top 100%", 
+            end: "bottom 0%", 
+            toggleClass: "is-visible" 
         });
 
     }, { scope: footerRef });
 
     return (
-        // ❌ Koi classes/UI change nahi kiye gaye ❌
-        <footer className="w-full bg-[#0b1120] text-[#FAF6EF] py-16 px-6 md:px-14 border-t border-white/5 overflow-hidden">
+        // 🚀 FINAL BULLETPROOF FIX: 
+        // marginTop: -50px karega taake ye BookDemoSection ke 50px ANDAR chala jaye.
+        // paddingTop: calc(4rem + 50px) content ko wapis apni jagah pe push karega taake design change na ho.
+        // z-index: 10 rakha hai taake BookDemoSection (z-index: 50) iske upar rahay.
+        <footer 
+            className="w-full bg-[#0b1120] text-[#FAF6EF] px-6 md:px-14 pb-16 relative z-10"
+            style={{
+                marginTop: "-50px", // Pulls footer UP by 50px
+                paddingTop: "calc(4rem + 50px)" // Balances the space so content stays perfect
+            }}
+        >
             
             {/* 🚀 CSS Optimization & Light Sweep */}
             <style>
@@ -70,12 +79,10 @@ const Footer = () => {
                         background-clip: text;
                         color: transparent;
                         
-                        /* Animation set ki hai par default 'paused' rakhi hai browser optimization k liye */
                         animation: shine-sweep 3s ease-in-out infinite;
                         animation-play-state: paused;
                     }
                     
-                    /* GSAP jab viewport mein .is-visible lagayega toh animation start hogi */
                     .is-visible .animate-shine-sweep {
                         animation-play-state: running;
                     }
@@ -100,7 +107,7 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* Bottom Links - 🚀 FIX: Mobile k liye Privacy Upar (order-1), Copyright Neechay (order-2) */}
+                {/* Bottom Links */}
                 <div className="footer-bottom opacity-0 translate-y-5 w-full flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/10 gap-4">
                     
                     <span className="order-2 sm:order-1 text-xs text-gray-600 font-medium">

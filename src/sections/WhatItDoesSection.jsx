@@ -59,8 +59,8 @@ export default function WhatItDoesSection() {
     const titleTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: "top 85%", 
-        end: "top 25%",   
+        start: "top 65%", 
+        end: "top 1%",   
         scrub: 1,         
       }
     });
@@ -175,7 +175,6 @@ export default function WhatItDoesSection() {
   return (
     <section
       ref={sectionRef}
-      // 🚀 FIX: Flex lagaya taake andhar wala grid center me aye
       className="relative bg-[#F0E9DD] w-full min-h-screen lg:h-screen overflow-hidden flex items-center"
     >
       {/* Ambient glow */}
@@ -185,28 +184,30 @@ export default function WhatItDoesSection() {
       ></div>
       <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
 
-      {/* 🚀 FIX: Master Grid Container (Left = Text, Right = Cards) */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center px-6 md:px-14 h-full pt-20 lg:pt-0">
+      {/* 🚀 FIX: max-w-6xl lagaya aur gap kam kiya taake dono elements center k qareeb rahen */}
+      <div className="relative z-20 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center px-6 md:px-14 h-full pt-20 lg:pt-0">
         
         {/* LEFT COLUMN: HEADING */}
-        <div className="w-full max-w-md text-center lg:text-left mx-auto lg:mx-0 shrink-0">
+        {/* 🚀 FIX: lg:justify-self-end laga kar isko center ki taraf dhakela (push kiya) */}
+        <div className="w-full lg:justify-self-end text-center lg:text-left mx-auto lg:mx-0 shrink-0 max-w-lg">
           <div className="mb-2">
             <div className="overflow-hidden mb-1">
-              <h1 ref={line1Ref} className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight leading-none opacity-0">
+              {/* 🚀 FIX: Text Sizes Increase kiye hain */}
+              <h1 ref={line1Ref} className="text-4xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black uppercase tracking-tight leading-none opacity-0">
                 What it
               </h1>
             </div>
             <div className="overflow-hidden mb-1">
               <h2
                 ref={line2Ref}
-                className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight leading-none opacity-0"
+                className="text-3xl sm:text-5xl lg:text-[4rem] xl:text-[5rem] font-black uppercase tracking-tight leading-none opacity-0"
                 style={{ color: COLORS.gold }}
               >
                 Actually
               </h2>
             </div>
             <div className="overflow-hidden">
-              <h3 ref={line3Ref} className="text-xl sm:text-2xl lg:text-4xl font-black uppercase tracking-tight leading-none opacity-0">
+              <h3 ref={line3Ref} className="text-2xl sm:text-4xl lg:text-[3rem] xl:text-[4rem] font-black uppercase tracking-tight leading-none opacity-0">
                 Does.
               </h3>
             </div>
@@ -214,9 +215,10 @@ export default function WhatItDoesSection() {
         </div>
 
         {/* RIGHT COLUMN: FANNED CARD DECK */}
+        {/* 🚀 FIX: lg:justify-self-start laga kar cards ko left (center) ki taraf pull kiya */}
         <div
           ref={stackWrapperRef}
-          className="w-full flex items-center justify-center lg:justify-end lg:pr-12 pb-20 lg:pb-0"
+          className="w-full lg:justify-self-end flex items-center justify-center lg:justify-end lg:pl-10 pb-20 lg:pb-0"
         >
           <div className="relative w-[240px] sm:w-[280px] h-[420px] sm:h-[480px]">
             {featuresData.map((f, i) => (
