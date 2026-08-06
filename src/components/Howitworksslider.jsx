@@ -2,6 +2,9 @@ import React, { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useMediaQuery } from 'react-responsive'
+import { ScrollTrigger } from 'gsap/all'
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const howitworkslists = [
   {
@@ -39,32 +42,39 @@ const Howitworksslider = () => {
 
         if(!isTablet){
             
-            // 🚀 FIX: Pin distance ko overlap k liye manage kiya hai
-            const scrollDistance = scrollAmount + 1200; // Asal scroll ki length
-            const holdPinDistance = window.innerHeight + 400; // BookDemo ko upar anay ka extra time dene k liye
+            // 🚀 DESKTOP (No changes - perfectly working)
+            const scrollDistance = scrollAmount + 1200; 
+            const holdPinDistance = window.innerHeight + 400; 
 
             const tL = gsap.timeline({
                 scrollTrigger:{
                     trigger: ".flavor-section",
                     start: "top top", 
                     pin: true,
-                    // end point barha diya taake overlap ki jagah mil jaye
                     end: `+=${scrollDistance + holdPinDistance}px`, 
                     scrub: 1,
                 }
             })
             
-            // Step 1: Slider horizontal scroll hoga
             tL.to(".horizontal-scroll-container" , {
                 x: `-${scrollAmount + 700}px`, 
                 ease: "none", 
-                duration: scrollDistance // Ratio set kiya taake animation perfectly speed mein ho
+                duration: scrollDistance 
             })
             
-            // Step 2: 🚀 THE MAGIC HOLD! (Empty tween) 
-            // Jab slider end par pohanch jayega, toh ye section hilega nahi balky pinned rahega
-            // is extra duration ke dauran agla BookDemo section overlaps karta hua upar aa jayega!
             tL.to({}, { duration: holdPinDistance });
+            
+        } else {
+            
+            // 🚀 FIX: MOBILE OVERLAP LOGIC (Footer Bug Fixed!)
+            // Ab default Pin behaviour on hai jis se BookDemo ka marginTop Footer ko nahi khainchay ga.
+            ScrollTrigger.create({
+                trigger: ".flavor-section", // Pura section target kiya
+                start: "bottom bottom", 
+                pin: true, // Default pinSpacing true rahega
+                end: () => `+=${window.innerHeight}`, // Exact 1 screen overlap k liye jagah
+                invalidateOnRefresh: true,
+            });
         }
         
         const titleTl = gsap.timeline({
@@ -88,6 +98,7 @@ const Howitworksslider = () => {
     })
 
   return (
+    // 🚀 FIX: `pb-[100dvh]` hata diya taake height naturally manage ho
     <div ref={sliderRef} className='slider-wrapper flex lg:items-center lg:h-full w-full lg:pl-10'>
         <div className="flavors flex flex-col lg:flex-row gap-10 md:gap-20 lg:items-center w-full lg:h-full">
             {
