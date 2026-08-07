@@ -27,23 +27,31 @@ const FeatureStages = () => {
 
         // ==========================================
         // 2. HERO TO STAGE 1 (RIGHT-TO-LEFT SLIDE)
-        // 🚀 FIX: NO PINNING! Natural scrolling continues.
         // ==========================================
         gsap.set(".stage-1-panel", { xPercent: 100 });
 
         const slideTl = gsap.timeline({ paused: true });
         
-        // Thora fast slide (0.8s) taake scroll ke sath natural feel ho
         slideTl.to(".stage-1-panel", { xPercent: 0, ease: "power3.out", duration: 0.8 })
                .fromTo(".text-reveal-1", { opacity: 0, x: 40 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.6, ease: "power2.out" }, "-=0.4")
                .fromTo(".ui-card-stage-1", { opacity: 0, x: 80, scale: 0.95 }, { opacity: 1, x: 0, scale: 1, duration: 0.6, ease: "power2.out" }, "-=0.5");
 
-        // 🚀 THE FIX: Pinning hata di gayi hai. Halka sa scroll hote hi ye simply animation play kar dega.
+        // 🚀 BUG FIX: ONLY PIN THE HERO BACKGROUND!
+        // Is se Stage 1 pin nahi hoga, wo natively scroll karega, lekin Hero wahin pathar ki tarah lock rahega!
         ScrollTrigger.create({
             trigger: ".hero-stage1-wrapper",
-            start: "top -10px", // Jaise hi 10px neechay scroll hoga
-            onEnter: () => slideTl.play(), // Right se slide In ho jaye
-            onLeaveBack: () => slideTl.reverse(), // Wapis Hero pe jao to slide out ho jaye
+            start: "top top",
+            end: "bottom bottom", // Jab tak wrapper khtam nahi hota, hero wahin rahay
+            pin: ".hero-fixed-bg", // 🚀 SIRF HERO DIV KO PIN KIYA HAI
+            pinSpacing: false // Important: Is se Stage 1 aaram se upar scroll karta rahega
+        });
+
+        // Tumhara original trigger: Halka sa scroll hote hi ye simply animation play kar dega bina rukey.
+        ScrollTrigger.create({
+            trigger: ".hero-stage1-wrapper",
+            start: "top -10px", 
+            onEnter: () => slideTl.play(), 
+            onLeaveBack: () => slideTl.reverse(), 
         });
 
         // ==========================================
@@ -91,13 +99,12 @@ const FeatureStages = () => {
             <div className="hero-stage1-wrapper overlap-section relative z-[10] w-full">
                 <div className="grid grid-cols-1 grid-rows-1 w-full relative">
                     
-                    {/* 🚀 THE HERO FIX: sticky top-0 */}
-                    {/* Is ki wajah se scroll pathar ki tarah lock rahega bina scroll ko roke! */}
-                    <div className="col-start-1 row-start-1 self-start w-full h-screen sticky top-0 bg-brand-dark">
+                    {/* 🚀 THE HERO FIX: GSAP ko use karte hue isy specific pin kiya hai. (CSS sticky hata diya kyunke overflow-hidden usy break kar raha tha) */}
+                    <div className="hero-fixed-bg col-start-1 row-start-1 self-start w-full h-screen bg-brand-dark">
                         <FeatureHero />
                     </div>
                     
-                    {/* Stage 1 Panel: Clean background without shadow */}
+                    {/* Stage 1 Panel: Natural scroll karta rahega */}
                     <div className="stage-1-panel col-start-1 row-start-1 w-full z-[15]">
                         <FeatureStageOne />
                     </div>
