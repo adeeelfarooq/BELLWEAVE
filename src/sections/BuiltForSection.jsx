@@ -60,25 +60,25 @@ export default function BuiltForSection() {
       wordsClass: "word-item transform-gpu will-change-transform",
     });
 
-    const words = splitText.words;
-    gsap.set(words, { color: "#666", opacity: 0.5 });
+    gsap.set(splitText.words, { color: "#666", opacity: 0.5 });
 
-    words.forEach((word, i) => {
-      gsap.to(word, {
-        color: "#0f172a",
-        opacity: 1,
-        ease: "none",
-        force3D: true,
-        scrollTrigger: {
-          trigger: ".persona-heading",
-          start: `top+=${i * 50} 65%`,
-          end: `top+=${i * 50 + 50} 100%`,
-          scrub: 1,
-        },
-      });
+    // 🚀 OPTIMIZATION: Removed the heavy .forEach loop! 
+    // Now it uses a SINGLE ScrollTrigger with stagger. Much lighter for mobile CPU!
+    gsap.to(splitText.words, {
+      color: "#0f172a",
+      opacity: 1,
+      stagger: 0.1, // Stagger automatically distributes the effect across the scroll distance
+      ease: "none",
+      force3D: true,
+      scrollTrigger: {
+        trigger: ".persona-heading",
+        start: "top 80%",
+        end: "bottom 50%",
+        scrub: 1,
+      },
     });
 
-    // 2. Subtitle fade in (Using fromTo for safety)
+    // 2. Subtitle fade in
     gsap.fromTo(".persona-subtitle", 
       { opacity: 0, y: 30 },
       {
@@ -86,6 +86,7 @@ export default function BuiltForSection() {
         y: 0,
         duration: 1,
         ease: "power2.out",
+        force3D: true, // 🚀 OPTIMIZATION: Added force3D
         scrollTrigger: {
           trigger: ".persona-subtitle",
           start: "top 85%",
@@ -94,7 +95,7 @@ export default function BuiltForSection() {
       }
     );
 
-    // 3. Cards Pin + One-by-One Entrance (FIXED LOGIC - Using fromTo)
+    // 3. Cards Pin + One-by-One Entrance
     const pinTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -105,14 +106,13 @@ export default function BuiltForSection() {
       }
     });
 
-    // 🚀 FIX: fromTo explicitly defines start and end values so React Strict Mode doesn't break it
     pinTl.fromTo(".persona-card", 
       { 
-        y: 400, // Cards will strictly start 400px below
+        y: 250, // 🚀 OPTIMIZATION: Reduced from 400 to 250 to prevent layout thrashing on mobile
         opacity: 0 
       },
       { 
-        y: 0, // And accurately settle at their original place
+        y: 0, 
         opacity: 1,
         stagger: 0.2,
         ease: "power2.out",
@@ -123,7 +123,6 @@ export default function BuiltForSection() {
     return () => splitText.revert();
   }, { scope: containerRef });
 
-  // Page fully load hone par ScrollTrigger positions refresh
   useEffect(() => {
     const handleLoad = () => {
       ScrollTrigger.refresh();
@@ -146,16 +145,18 @@ export default function BuiltForSection() {
       ref={containerRef}
       className="bg-[#FAF6EF] text-brand-dark h-screen w-full flex flex-col justify-center px-6 md:px-14 py-6 relative overflow-hidden"
     >
-      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand-primary/5 blur-[120px] pointer-events-none"></div>
+      {/* 🚀 OPTIMIZATION: Added transform-gpu to prevent blur from lagging the scroll */}
+      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand-primary/5 blur-[120px] pointer-events-none transform-gpu"></div>
 
       <div className="max-w-6xl flex flex-col justify-center items-center mx-auto w-full relative z-10">
         
         {/* Header */}
-        <div className="max-w-3xl   mb-8 md:mb-12">
-          <h1 className="persona-heading  hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
+        <div className="max-w-3xl mb-8 md:mb-12">
+          <h1 className="persona-heading hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
             Built for whoever owns the timetable.
           </h1>
-          <p className="persona-subtitle text-gray-500 text-center text-sm md:text-lg leading-relaxed font-medium">
+          {/* 🚀 OPTIMIZATION: Added transform-gpu */}
+          <p className="persona-subtitle transform-gpu text-gray-500 text-center text-sm md:text-lg leading-relaxed font-medium">
             Head teacher, deputy head, business manager, or the person who actually builds the grid every term — Bellweave is built around them.
           </p>
         </div>
@@ -165,7 +166,8 @@ export default function BuiltForSection() {
           {personasData.map((p) => (
             <div 
               key={p.id} 
-              className="persona-card group bg-white border border-gray-100 rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+              // 🚀 OPTIMIZATION: Added transform-gpu and will-change-transform for buttery smooth animation
+              className="persona-card transform-gpu will-change-transform group bg-white border border-gray-100 rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
               {/* Icon Box */}
               <div className="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-3 md:mb-6 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">

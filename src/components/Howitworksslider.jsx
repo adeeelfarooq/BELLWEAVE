@@ -63,6 +63,7 @@ const Howitworksslider = () => {
             tL.to(".horizontal-scroll-container" , {
                 x: () => `-${getScrollMove()}px`, 
                 ease: "none", 
+                force3D: true, // 🚀 OPTIMIZATION: Hardware acceleration during horizontal scroll
                 duration: () => getScrollMove() || 1 
             })
             
@@ -87,14 +88,19 @@ const Howitworksslider = () => {
                 scrub: true,
             }
         })
+        
+        // 🚀 OPTIMIZATION: Added force3D true to text animations to prevent jitter on scrub
         titleTl.to(".first-text-split" , {
             xPercent: -30,
+            force3D: true,
             ease: "power1.inOut",
         }).to(".flavor-text-scroll" , {
             xPercent: -52,
+            force3D: true,
             ease: "power1.inOut", 
         }, "<").to(".second-text-split" , {
             xPercent: -10,
+            force3D: true,
             ease: "power1.inOut",
         } , "<")
     })
@@ -104,21 +110,22 @@ const Howitworksslider = () => {
         <div className="flavors flex flex-col lg:flex-row gap-10 md:gap-20 lg:items-center w-full lg:h-full">
             {
                 howitworkslists.map((flavor)=>(
-                    // 🚀 FIX: 'lg:w-[32vw]' aur 'lg:h-[70vh]' hata kar exact max-widths (max-w-[380px]) aur fixed height lagayi hai.
-                    // Is se image aur card ka design kisi bhi screen par distort ya kharab nahi hoga, hamesha MD/Mobile jaisa perfect wide rahega.
                     <div 
                         key={flavor.step} 
                         className={`z-30 w-full max-w-sm lg:max-w-[380px] xl:max-w-[420px] mx-auto lg:mx-0 h-[450px] lg:h-[500px] flex-none relative flex flex-col lg:-translate-y-4`}
                     >
-                        <div className="w-full h-[60%] md:h-[65%] rounded-2xl overflow-hidden mb-6 shadow-xl">
+                        <div className="w-full h-[60%] md:h-[65%] rounded-2xl overflow-hidden mb-6 shadow-xl transform-gpu">
+                            {/* 🚀 OPTIMIZATION: Added loading="lazy" for better performance */}
                             <img 
                                 src={`/images/${flavor.image}.png`} 
                                 alt={flavor.Caption} 
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full h-full object-cover" 
                             />
                         </div>
 
-                        <div className="flex flex-col flex-1">
+                        <div className="flex flex-col flex-1 transform-gpu">
                             <span className="text-[#0f6a31] font-black text-2xl mb-1 drop-shadow-md">
                                 {flavor.step}
                             </span>

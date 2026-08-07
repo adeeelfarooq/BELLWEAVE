@@ -1,5 +1,4 @@
 import React from 'react'
-// 🚀 FIX: React Router se Link import kiya hai
 import { Link } from 'react-router-dom'
 import Howitworkstitle from '../components/Howitworkstitle'
 import Howitworksslider from '../components/Howitworksslider'
@@ -13,7 +12,6 @@ const HowItWorksSection = () => {
             {/* PINNED BUTTON */}
             <div className="absolute z-[50] bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer">
                 
-                {/* 🚀 FIX: 'a' tag ko 'Link' se badal diya aur 'href' ki jagah 'to="/features"' laga diya */}
                 <Link to="/features" className="group inline-flex items-center justify-center gap-2 text-sm md:text-base font-bold tracking-wide text-[#0f6a31]">
                     <span className="relative whitespace-nowrap">
                         Read the full walkthrough
@@ -26,7 +24,8 @@ const HowItWorksSection = () => {
 
             </div>
 
-            <div className="horizontal-scroll-container lg:h-screen min-h-screen flex lg:flex-row flex-col lg:items-center relative lg:w-[max-content] w-full">
+            {/* 🚀 OPTIMIZATION: Added transform-gpu and will-change-transform so horizontal scrolling is buttery smooth on mobile */}
+            <div className="horizontal-scroll-container transform-gpu will-change-transform lg:h-screen min-h-screen flex lg:flex-row flex-col lg:items-center relative lg:w-[max-content] w-full">
                 
                 <div className="lg:w-[45vw] w-full flex-none lg:h-full flex flex-col justify-center px-6 md:px-16 pt-20 lg:pt-0 pb-10 lg:pb-0">
                   <Howitworkstitle/>

@@ -3,7 +3,6 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-// 🚀 FIX: React Router se Link import kiya hai
 import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,25 +13,24 @@ const featuresData = [
     title: "Builds a timetable that holds.",
     desc: "Every teacher, room and class stays conflict-free, automatically, every week of term. When something genuinely can't be scheduled, Bellweave says so instead of quietly forcing it in.",
     link: "Read the rules it never breaks",
-    path: "/features#stage-2" // 🚀 FIX: Path set for Stage 2
+    path: "/features#stage-2" 
   },
   {
     id: "02",
     title: "Covers the Monday someone's out.",
     desc: "The moment a teacher calls in sick, Bellweave finds the best-placed colleague to step in — or tells you plainly when nobody qualified is free, instead of guessing.",
     link: "See a real morning play out",
-    path: "/features#stage-3" // 🚀 FIX: Path set for Stage 3
+    path: "/features#stage-3" 
   },
   {
     id: "03",
     title: "Keeps an honest record.",
     desc: "Every change is logged: who, when, and why. The published plan is never quietly rewritten, so you can always account for what actually happened.",
     link: "See how the record works",
-    path: "/features#stage-4" // 🚀 FIX: Path set for Stage 4
+    path: "/features#stage-4" 
   },
 ];
 
-// Compact fanned deck positions — buffer of 30px on top card so hover pop never clips
 const cardConfig = [
   { rotate: -2, x: 0, y: 30, z: 30 },
   { rotate: -11, x: -30, y: 86, z: 20 },
@@ -60,7 +58,6 @@ export default function WhatItDoesSection() {
 
   useGSAP(() => {
     
-    // Heading GSAP - No changes
     const titleTl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -85,7 +82,6 @@ export default function WhatItDoesSection() {
       "<0.1"
     );
 
-    // Cards Setup
     cardConfig.forEach((cfg, i) => {
       const outer = outerRefs.current[i];
       const inner = innerRefs.current[i];
@@ -109,7 +105,6 @@ export default function WhatItDoesSection() {
       });
     });
 
-    // Cards Animation
     cardConfig.forEach((cfg, i) => {
       const outer = outerRefs.current[i];
       if (!outer) return;
@@ -154,6 +149,7 @@ export default function WhatItDoesSection() {
       duration: 0.55,
       ease: "power3.out",
       overwrite: true,
+      force3D: true, // 🚀 OPTIMIZATION: Hardware acceleration on hover
     });
   };
 
@@ -171,6 +167,7 @@ export default function WhatItDoesSection() {
       duration: 0.5,
       ease: "power3.inOut",
       overwrite: true,
+      force3D: true, // 🚀 OPTIMIZATION: Hardware acceleration on hover leave
       onComplete: () => {
         gsap.set(outer, { zIndex: cfg.z });
       },
@@ -182,37 +179,35 @@ export default function WhatItDoesSection() {
       ref={sectionRef}
       className="relative bg-[#F0E9DD] w-full min-h-screen lg:h-screen overflow-hidden flex items-center"
     >
-      {/* Ambient glow */}
+      {/* 🚀 OPTIMIZATION: Added transform-gpu to prevent heavy blur lagging on scroll */}
       <div
-        className="absolute top-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full pointer-events-none opacity-20 blur-[140px]"
+        className="absolute top-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full pointer-events-none opacity-20 blur-[140px] transform-gpu"
         style={{ backgroundColor: COLORS.gold }}
       ></div>
       <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
 
-      {/* 🚀 FIX: max-w-6xl lagaya aur gap kam kiya taake dono elements center k qareeb rahen */}
       <div className="relative z-20 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center px-6 md:px-14 h-full pt-20 lg:pt-0">
         
         {/* LEFT COLUMN: HEADING */}
-        {/* 🚀 FIX: lg:justify-self-end laga kar isko center ki taraf dhakela (push kiya) */}
         <div className="w-full lg:justify-self-end text-center lg:text-left mx-auto lg:mx-0 shrink-0 max-w-lg">
           <div className="mb-2">
             <div className="overflow-hidden mb-1">
-              {/* 🚀 FIX: Text Sizes Increase kiye hain */}
-              <h1 ref={line1Ref} className="text-4xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black uppercase tracking-tight leading-none opacity-0">
+              {/* 🚀 OPTIMIZATION: transform-gpu & will-change for buttery smooth text slide */}
+              <h1 ref={line1Ref} className="text-4xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black uppercase tracking-tight leading-none opacity-0 transform-gpu will-change-transform">
                 What it
               </h1>
             </div>
             <div className="overflow-hidden mb-1">
               <h2
                 ref={line2Ref}
-                className="text-3xl sm:text-5xl lg:text-[4rem] xl:text-[5rem] font-black uppercase tracking-tight leading-none opacity-0"
+                className="text-3xl sm:text-5xl lg:text-[4rem] xl:text-[5rem] font-black uppercase tracking-tight leading-none opacity-0 transform-gpu will-change-transform"
                 style={{ color: COLORS.gold }}
               >
                 Actually
               </h2>
             </div>
             <div className="overflow-hidden">
-              <h3 ref={line3Ref} className="text-2xl sm:text-4xl lg:text-[3rem] xl:text-[4rem] font-black uppercase tracking-tight leading-none opacity-0">
+              <h3 ref={line3Ref} className="text-2xl sm:text-4xl lg:text-[3rem] xl:text-[4rem] font-black uppercase tracking-tight leading-none opacity-0 transform-gpu will-change-transform">
                 Does.
               </h3>
             </div>
@@ -220,7 +215,6 @@ export default function WhatItDoesSection() {
         </div>
 
         {/* RIGHT COLUMN: FANNED CARD DECK */}
-        {/* 🚀 FIX: lg:justify-self-start laga kar cards ko left (center) ki taraf pull kiya */}
         <div
           ref={stackWrapperRef}
           className="w-full lg:justify-self-end flex items-center justify-center lg:justify-end lg:pl-10 pb-20 lg:pb-0"
@@ -232,11 +226,13 @@ export default function WhatItDoesSection() {
                 ref={(el) => (outerRefs.current[i] = el)}
                 onMouseEnter={() => handleEnter(i)}
                 onMouseLeave={() => handleLeave(i)}
-                className="absolute top-0 left-0 w-full h-[260px] sm:h-[300px] cursor-pointer"
+                // 🚀 OPTIMIZATION: transform-gpu & will-change for the outer card wrappers moving in Y-axis
+                className="absolute top-0 left-0 w-full h-[260px] sm:h-[300px] cursor-pointer transform-gpu will-change-[transform,opacity]"
               >
                 <div
                   ref={(el) => (innerRefs.current[i] = el)}
-                  className="w-full h-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 will-change-transform flex flex-col"
+                  // 🚀 OPTIMIZATION: Added transform-gpu to the rotating/scaling inner element
+                  className="w-full h-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 will-change-transform transform-gpu flex flex-col"
                   style={{
                     backgroundColor: COLORS.cardBg,
                     color: COLORS.cardText,
@@ -257,7 +253,6 @@ export default function WhatItDoesSection() {
                     {f.desc}
                   </p>
 
-                  {/* 🚀 FIX: <a> tag ko <Link> mein tabdeel kar diya */}
                   <Link
                     to={f.path}
                     className="group mt-auto inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-wide"
@@ -266,11 +261,11 @@ export default function WhatItDoesSection() {
                     <span className="relative">
                       {f.link}
                       <span
-                        className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                        className="absolute left-0 -bottom-1 w-full h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 transform-gpu"
                         style={{ backgroundColor: COLORS.gold }}
                       ></span>
                     </span>
-                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform transform-gpu" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </Link>
