@@ -1,5 +1,5 @@
 import React from 'react';
-import PageContainer from '../components/PageContainer';
+import PageContainer from './PageContainer';
 
 const standardPeriods = [
     { name: "P1", time: "08:30–09:15", type: "lesson" },

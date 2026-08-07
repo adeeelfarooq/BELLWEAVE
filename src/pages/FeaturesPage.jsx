@@ -5,8 +5,7 @@ import { useGSAP } from '@gsap/react';
 
 // 🚀 FIX: Yahan bhi '../' aayega
 import Navbar from '../sections/NavbarSection';
-import FeaturesHero from '../sections/FeaturesHero';
-import FeatureStageOne from '../sections/FeatureStageOne';
+
 import Footer from '../sections/Footer';
 import FeatureStages from '../sections/FeatureStages';
 

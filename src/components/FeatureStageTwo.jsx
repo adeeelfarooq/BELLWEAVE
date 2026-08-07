@@ -1,5 +1,5 @@
 import React from 'react';
-import PageContainer from '../components/PageContainer';
+import PageContainer from './PageContainer';
 
 const hardRules = [
     { id: "H1", text: "A teacher is in at most one session per (date, period)." },

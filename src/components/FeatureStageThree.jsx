@@ -1,5 +1,5 @@
 import React from 'react';
-import PageContainer from '../components/PageContainer';
+import PageContainer from './PageContainer';
 
 // Reusable component for Timeline Events
 const TimelineItem = ({ time, children, isLast = false }) => (

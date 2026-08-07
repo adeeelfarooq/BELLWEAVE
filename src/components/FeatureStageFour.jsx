@@ -1,5 +1,5 @@
 import React from 'react';
-import PageContainer from '../components/PageContainer';
+import PageContainer from './PageContainer';
 
 // Reusable Detail Row for the Audit Card
 const AuditRow = ({ label, value, isStatus, isVersion }) => (
