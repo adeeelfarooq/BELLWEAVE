@@ -35,7 +35,7 @@ const Hero = () => {
         tl.to(".hero-content", {
             opacity: 1,
             y: 0,
-            ease: "power2.out", // 🚀 power1 se power2 smooth hai
+            ease: "power2.out", 
         })
         .to(".hero-text-scroll", {
             duration: 1,
@@ -43,10 +43,11 @@ const Hero = () => {
             ease: "circ.out"
         }, "-=0.1")
         .from(titleSplit.chars, {
-            yPercent: 120, // 🚀 150 se 120 kiya taake mobile text cut na ho
+            yPercent: 120, 
             opacity: 0,
-            stagger: 0.02, // 🚀 Thora fast feel dilaane ke liye 0.03 se 0.02
-            ease: "power3.out"
+            stagger: 0.02, 
+            ease: "power3.out",
+            force3D: true // 🚀 OPTIMIZATION: Text hardware acceleration
         }, "-=0.6");
 
         const heroTl = gsap.timeline({
@@ -66,7 +67,7 @@ const Hero = () => {
             scale: 0.92,
             yPercent: 20,
             borderRadius: "40px", 
-            transformOrigin: "center center", // 🚀 iOS safari par pixelation roknay ke liye
+            transformOrigin: "center center", 
             ease: "none" 
         });
 
@@ -90,19 +91,19 @@ const Hero = () => {
             <style dangerouslySetInnerHTML={{ __html: marqueeStyles }} />
 
             <section id="hero-container" className='bg-[#0f6a31]'>
-                {/* 🚀 OPTIMIZATION: willChange mein borderRadius bhi diya taake lag na kare */}
                 <div className='hero-container' style={{ willChange: "transform, border-radius" }}>
                     
                     <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
-                    {/* 🚀 OPTIMIZATION: transform-gpu add kiya bhari blurs k liye */}
                     <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-primary/10 blur-[120px] pointer-events-none transform-gpu"></div>
                         
                     <div className='hero-content opacity-0 flex flex-col justify-center !pt-16' style={{ willChange: "transform, opacity" }}>
                         
                         <div className='md:overflow-hidden px-4'>
-                            <h1 className='hero-title text-brand-dark !text-[1.8rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
-                                School scheduling <br /> that tells you the truth
+                            {/* 🚀 FIX & OPTIMIZATION: Exact 2 lines locked using block and whitespace-nowrap. Tweaked base mobile size slightly (1.65rem) so nowrap doesn't overflow small screens. */}
+                            <h1 className='hero-title transform-gpu text-brand-dark !text-[1.65rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
+                                <span className="block whitespace-nowrap">School scheduling</span>
+                                <span className="block whitespace-nowrap">that tells you the truth</span>
                             </h1>
                         </div>
                         
@@ -122,13 +123,13 @@ const Hero = () => {
                             </div>
                         </div>
                         
-                        <h2 className="font-sans text-gray-500 text-center max-w-3xl md:text-lg text-sm leading-relaxed mt-2 px-4 font-medium">
+                        <h2 className="font-sans text-gray-500 text-center max-w-3xl md:text-lg text-sm leading-relaxed mt-2 px-4 font-medium transform-gpu">
                             Bellweave builds your school's timetable, keeps every teacher, room and class conflict-free, and finds the right cover the moment someone calls in sick — or tells you honestly when no one is available.
                         </h2>
                         
                         <div 
                             onClick={handleScrollToDemo}
-                            className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8 cursor-pointer py-4 !shadow-none"
+                            className="hero-button relative inline-flex items-center justify-center group !mt-6 md:!mt-8 cursor-pointer py-4 !shadow-none transform-gpu will-change-[transform,opacity]"
                             style={{ boxShadow: 'none' }}
                         >
                             
