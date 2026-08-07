@@ -25,28 +25,32 @@ const AuditRow = ({ label, value, isStatus, isVersion }) => (
 
 const FeatureStageFour = () => {
     return (
-        <section id="stage-account" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform">
+        // 🚀 OPTIMIZATION: Main container gets transform-gpu to prevent overlap scroll jank
+        <section id="stage-account" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform transform-gpu">
             
             {/* Background Grid & Glows */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-            <div className="absolute top-[10%] left-[-10%] w-[40%] h-[50%] rounded-full bg-purple-500/5 blur-[120px] pointer-events-none"></div>
-            <div className="absolute bottom-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/5 blur-[120px] pointer-events-none"></div>
+            
+            {/* 🚀 OPTIMIZATION: Heavy background blurs offloaded to GPU */}
+            <div className="absolute top-[10%] left-[-10%] w-[40%] h-[50%] rounded-full bg-purple-500/5 blur-[120px] pointer-events-none transform-gpu"></div>
+            <div className="absolute bottom-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/5 blur-[120px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="flex flex-col gap-24 lg:gap-32 relative z-10 w-full h-full">
                 
-                {/* 🚀 TOP PART: Intro & Audit Card */}
+                {/* TOP PART: Intro & Audit Card */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
                     
                     <div className="lg:col-span-6 flex flex-col gap-5 lg:pr-8">
-                        <span className="text-reveal-4 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0">
+                        {/* 🚀 OPTIMIZATION: All GSAP targets (text-reveal-4) get transform-gpu for smooth rendering */}
+                        <span className="text-reveal-4 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0 transform-gpu will-change-[transform,opacity]">
                             4.0
                         </span>
                         
-                        <h2 className="text-reveal-4 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0">
+                        <h2 className="text-reveal-4 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0 transform-gpu will-change-[transform,opacity]">
                             Answer for it later.
                         </h2>
                         
-                        <div className="text-reveal-4 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0">
+                        <div className="text-reveal-4 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0 transform-gpu will-change-[transform,opacity]">
                             <p>Two layers. One is the plan; the other is the week that actually happened. Keeping them apart is what makes a year auditable instead of merely finished.</p>
                             <p><strong className="text-[#0f172a]">Layer 1 — the base timetable.</strong> The plan. Generated, versioned, published. It says 9A have English with Ms L. Price at P3 on Mondays, and it goes on saying that. It does not know Mr T. Bell was ill, and it should not.</p>
                             <p><strong className="text-[#0f172a]">Layer 2 — what happened on the date.</strong> Monday’s substitution lives here, on the occurrence. Which is exactly why next Monday needs no undoing: the plan was never edited, so it simply reasserts itself.</p>
@@ -62,9 +66,10 @@ const FeatureStageFour = () => {
 
                     {/* AUDIT LOG PREMIUM CARD */}
                     <div className="lg:col-span-6 relative w-full flex justify-center lg:justify-end">
-                        <div className="ui-card-stage-4 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-4 relative overflow-hidden opacity-0">
+                        {/* 🚀 OPTIMIZATION: Large animated card offloaded to Graphics Card */}
+                        <div className="ui-card-stage-4 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-4 relative overflow-hidden opacity-0 transform-gpu will-change-transform">
                             
-                            <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+                            <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-[80px] pointer-events-none transform-gpu"></div>
 
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">
                                 <h3 className="font-bold text-[#0f172a] tracking-wide text-sm flex items-center gap-2">
@@ -94,10 +99,10 @@ const FeatureStageFour = () => {
                     </div>
                 </div>
 
-                {/* 🚀 MIDDLE PART: Republishing Logic */}
+                {/* MIDDLE PART: Republishing Logic */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center mt-6">
                     
-                    <div className="lg:col-span-6 lg:order-2 flex flex-col gap-5 lg:pl-8 text-reveal-4 opacity-0">
+                    <div className="lg:col-span-6 lg:order-2 flex flex-col gap-5 lg:pl-8 text-reveal-4 opacity-0 transform-gpu will-change-[transform,opacity]">
                         <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-[#0f172a] leading-[1.1]">
                             Republishing is where most systems quietly lose the truth.
                         </h2>
@@ -112,7 +117,8 @@ const FeatureStageFour = () => {
                     </div>
 
                     <div className="lg:col-span-6 lg:order-1 relative w-full flex justify-center lg:justify-start">
-                        <div className="ui-card-stage-4 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-5 relative overflow-hidden opacity-0">
+                        {/* 🚀 OPTIMIZATION: Card GPU rendering */}
+                        <div className="ui-card-stage-4 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-5 relative overflow-hidden opacity-0 transform-gpu will-change-transform">
                             
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">
                                 <h3 className="font-bold text-[#0f172a] tracking-wide text-sm">Republish status</h3>
@@ -160,8 +166,8 @@ const FeatureStageFour = () => {
 
                 </div>
 
-                {/* 🚀 BOTTOM PART: Outro */}
-                <div className="max-w-3xl mx-auto text-center mt-4 lg:mt-6 flex flex-col gap-6 text-reveal-4 bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 opacity-0">
+                {/* BOTTOM PART: Outro */}
+                <div className="max-w-3xl mx-auto text-center mt-4 lg:mt-6 flex flex-col gap-6 text-reveal-4 bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 opacity-0 transform-gpu will-change-[transform,opacity]">
                     <p className="text-[14px] md:text-[15px] font-medium text-gray-600 leading-relaxed">
                         Nine statuses carry a session’s life on the day — all of them Layer 2. The base plan has no status at all; it only says what should happen. These say what did: <span className="font-mono text-[12px] bg-gray-100 text-gray-600 px-1 rounded">scheduled</span>, <span className="font-mono text-[12px] bg-[#0f6a31]/10 text-[#0f6a31] px-1 rounded">substituted</span>, <span className="font-mono text-[12px] bg-blue-50 text-blue-600 px-1 rounded">roomChanged</span>, <span className="font-mono text-[12px] bg-red-50 text-red-600 px-1 rounded">needsCoverage</span>, <span className="font-mono text-[12px] bg-red-50 text-red-600 px-1 rounded">needsRoom</span>, <span className="font-mono text-[12px] bg-orange-50 text-orange-600 px-1 rounded">needsReview</span>, <span className="font-mono text-[12px] bg-blue-50 text-blue-600 px-1 rounded">resolved</span>, <span className="font-mono text-[12px] bg-gray-100 text-gray-600 px-1 rounded">cancelled</span>, <span className="font-mono text-[12px] bg-purple-50 text-purple-600 px-1 rounded">oneOff</span>.
                     </p>

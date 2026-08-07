@@ -26,28 +26,31 @@ const softGoals = [
 
 const FeatureStageTwo = () => {
     return (
-        <section id="stage-publish" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform">
+        // 🚀 OPTIMIZATION: Main section needs transform-gpu because it slides over Stage 1
+        <section id="stage-publish" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform transform-gpu">
             
             {/* Background Grid & Glows */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-            <div className="absolute top-[10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-red-500/5 blur-[120px] pointer-events-none"></div>
-            <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/10 blur-[120px] pointer-events-none"></div>
+            
+            {/* 🚀 OPTIMIZATION: Offload heavy blurs to GPU */}
+            <div className="absolute top-[10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-red-500/5 blur-[120px] pointer-events-none transform-gpu"></div>
+            <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/10 blur-[120px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="flex flex-col gap-24 lg:gap-32 relative z-10 w-full h-full">
                 
-                {/* 🚀 TOP PART: Intro & Feasibility Report Card */}
+                {/* TOP PART: Intro & Feasibility Report Card */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
                     <div className="lg:col-span-6 flex flex-col gap-5 lg:pr-8">
-                        {/* 🚀 FIX: Removed manual opacity-0, GSAP will handle it dynamically */}
-                        <span className="text-reveal-2 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max">
+                        {/* 🚀 OPTIMIZATION: Added transform-gpu to GSAP animated targets */}
+                        <span className="text-reveal-2 transform-gpu text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0">
                             2.0
                         </span>
                         
-                        <h2 className="text-reveal-2 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a]">
+                        <h2 className="text-reveal-2 transform-gpu text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0">
                             Publish what you can defend.
                         </h2>
                         
-                        <div className="text-reveal-2 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed">
+                        <div className="text-reveal-2 transform-gpu flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0">
                             <p>Generation runs per campus, per term. What comes back is a draft — and a list of everything it refused to do.</p>
                             <p><strong className="text-[#0f172a]">The generator cannot break a hard rule. Not quietly, not loudly, not at all.</strong></p>
                             <p>That sentence is the whole product. There are thirteen hard constraints. They are not preferences, and they are not weighted — they hold, or the slot stays empty.</p>
@@ -58,8 +61,9 @@ const FeatureStageTwo = () => {
 
                     {/* RIGHT COLUMN: PREMIUM FEASIBILITY REPORT CARD */}
                     <div className="lg:col-span-6 relative w-full flex justify-center lg:justify-end">
-                        <div className="ui-card-stage-2 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden">
-                            <div className="absolute -top-32 -right-32 w-64 h-64 bg-red-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+                        {/* 🚀 OPTIMIZATION: Transform-gpu for the large sliding card */}
+                        <div className="ui-card-stage-2 transform-gpu will-change-transform w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0">
+                            <div className="absolute -top-32 -right-32 w-64 h-64 bg-red-500/5 rounded-full blur-[80px] pointer-events-none transform-gpu"></div>
 
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">
                                 <h3 className="font-bold text-[#0f172a] tracking-wide text-sm">Feasibility report <span className="font-medium text-gray-400">· one unplaced period</span></h3>
@@ -100,9 +104,9 @@ const FeatureStageTwo = () => {
                     </div>
                 </div>
 
-                {/* 🚀 MIDDLE PART: The 13 Hard Constraints */}
+                {/* MIDDLE PART: The 13 Hard Constraints */}
                 <div className="flex flex-col gap-10 lg:gap-14">
-                    <div className="text-reveal-2 text-center max-w-2xl mx-auto flex flex-col gap-2">
+                    <div className="text-reveal-2 transform-gpu text-center max-w-2xl mx-auto flex flex-col gap-2 opacity-0">
                         <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-[#0f172a]">
                             The thirteen. Never violated.
                         </h2>
@@ -113,7 +117,8 @@ const FeatureStageTwo = () => {
 
                     <div className="rules-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-6">
                         {hardRules.map((rule, index) => (
-                            <div key={index} className="rule-card bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(15,106,49,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4 group">
+                            // 🚀 OPTIMIZATION: Transform-gpu so staggered GSAP animation doesn't cause frame drops
+                            <div key={index} className="rule-card transform-gpu will-change-transform bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(15,106,49,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4 group opacity-0">
                                 <div className="text-[#0f6a31] font-black text-xl tracking-tight">
                                     {rule.id}
                                 </div>
@@ -125,9 +130,9 @@ const FeatureStageTwo = () => {
                     </div>
                 </div>
 
-                {/* 🚀 BOTTOM PART: The 4 Soft Goals */}
+                {/* BOTTOM PART: The 4 Soft Goals */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mt-6">
-                    <div className="lg:col-span-5 flex flex-col gap-5 text-reveal-2 lg:pr-8">
+                    <div className="lg:col-span-5 flex flex-col gap-5 text-reveal-2 transform-gpu opacity-0 lg:pr-8">
                         <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-[#0f172a] leading-[1.1]">
                             Four soft goals bend.<br/> The thirteen do not.
                         </h2>
@@ -138,7 +143,8 @@ const FeatureStageTwo = () => {
 
                     <div className="lg:col-span-7 soft-goals-grid grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {softGoals.map((goal, index) => (
-                            <div key={index} className="soft-goal-card bg-white/40 backdrop-blur-sm p-6 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#0f6a31]/40 hover:bg-white transition-all duration-300 flex flex-col gap-4">
+                            // 🚀 OPTIMIZATION: Transform-gpu on animated grids
+                            <div key={index} className="soft-goal-card transform-gpu will-change-transform bg-white/40 backdrop-blur-sm p-6 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#0f6a31]/40 hover:bg-white transition-all duration-300 flex flex-col gap-4 opacity-0">
                                 <div className="text-gray-400 font-bold text-lg tracking-tight">
                                     {goal.id}
                                 </div>
@@ -150,8 +156,8 @@ const FeatureStageTwo = () => {
                     </div>
                 </div>
 
-                {/* 🚀 Outro Paragraphs */}
-                <div className="max-w-3xl mx-auto text-center mt-6 lg:mt-10 flex flex-col gap-6 text-reveal-2 bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
+                {/* Outro Paragraphs */}
+                <div className="max-w-3xl mx-auto text-center mt-6 lg:mt-10 flex flex-col gap-6 text-reveal-2 transform-gpu opacity-0 bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
                     <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-[#0f172a]">
                         Draft, review, publish.
                     </h2>

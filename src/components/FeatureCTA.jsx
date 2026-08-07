@@ -23,6 +23,7 @@ const FeatureCTA = () => {
                 opacity: 1,
                 x: 0, // Wapis apni original jagah par aayega
                 ease: "power2.out",
+                force3D: true, // 🚀 OPTIMIZATION: Hardware acceleration for scrub animation
                 scrollTrigger: {
                     trigger: headingRef.current,
                     start: "top 95%", // Jab screen mein neechay se enter ho
@@ -37,14 +38,15 @@ const FeatureCTA = () => {
         <section className="w-full bg-[#0f172a] py-16 md:py-20 lg:py-24 border-t border-white/5 relative overflow-hidden">
             
             {/* Subtle Green Glow on the Left (Behind Heading) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] rounded-full bg-[#0f6a31]/10 blur-[150px] pointer-events-none"></div>
+            {/* 🚀 OPTIMIZATION: Added transform-gpu to offload heavy blur to Graphics Card */}
+            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] rounded-full bg-[#0f6a31]/10 blur-[150px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     
                     {/* LEFT COLUMN: HEADING */}
-                    {/* 🚀 FIX: Ref add kiya, aur clash se bachanay k liye iski purani class htadi */}
-                    <div ref={headingRef} className="flex flex-col text-center md:text-left">
+                    {/* 🚀 OPTIMIZATION: Added transform-gpu & will-change to prepare browser for smooth slide */}
+                    <div ref={headingRef} className="flex flex-col text-center md:text-left transform-gpu will-change-[transform,opacity]">
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight leading-[1.05] text-transparent bg-clip-text bg-gradient-to-r from-[#0f6a31] to-emerald-400">
                             Ready to see it <br className="hidden lg:block"/> 
                             against your own <br className="hidden lg:block"/> 
@@ -53,8 +55,8 @@ const FeatureCTA = () => {
                     </div>
 
                     {/* RIGHT COLUMN: BUTTON */}
-                    <div className="flex justify-center md:justify-end cta-reveal opacity-0">
-                        {/* 🚀 FIX: div ko hata kar Link tag laga diya */}
+                    {/* 🚀 OPTIMIZATION: Added GPU classes for the parent-triggered cta-reveal animation */}
+                    <div className="flex justify-center md:justify-end cta-reveal opacity-0 transform-gpu will-change-[transform,opacity]">
                         <Link to="/#book-demo" className="hero-button relative inline-flex items-center justify-center group cursor-pointer py-4 lg:py-5 !shadow-none" style={{ boxShadow: 'none' }}>
                             <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none !shadow-none"></div>
                             <div className="relative z-10 text-white font-bold uppercase tracking-widest m-0 px-8 lg:px-10">

@@ -1,9 +1,9 @@
 import React from 'react';
 import PageContainer from './PageContainer';
 
-// Reusable component for Timeline Events
+// 🚀 OPTIMIZATION: TimelineItem needs transform-gpu because it animates in via GSAP
 const TimelineItem = ({ time, children, isLast = false }) => (
-    <div className="relative pl-8 md:pl-12 pb-8 timeline-item opacity-0 translate-y-4">
+    <div className="relative pl-8 md:pl-12 pb-8 timeline-item opacity-0 translate-y-4 transform-gpu will-change-[transform,opacity]">
         {/* Timeline Line */}
         {!isLast && <div className="absolute top-2 left-[11px] md:left-[19px] bottom-0 w-[2px] bg-gray-200"></div>}
         
@@ -14,20 +14,18 @@ const TimelineItem = ({ time, children, isLast = false }) => (
         <div className="absolute top-1.5 -left-12 md:-left-6 text-[11px] font-bold text-gray-400">{time}</div>
         
         {/* Content */}
-        <div className="text-[14px] md:text-[15px] font-medium text-gray-600 leading-relaxed pt-0.5">
+        <div className="text-[14px] md:text-[15px] font-medium text-gray-600 leading-relaxed pt-0.5 transform-gpu">
             {children}
         </div>
     </div>
 );
 
-// Reusable Class Detail Pill
 const ClassDetail = ({ text }) => (
     <div className="inline-block bg-white border border-gray-200 px-3 py-1.5 rounded-md text-[12px] font-bold text-[#0f172a] shadow-sm my-2 font-mono tracking-tight">
         {text}
     </div>
 );
 
-// Reusable Status Badge
 const StatusBadge = ({ status }) => {
     let styles = "";
     if (status === "substituted") styles = "bg-[#0f6a31]/10 text-[#0f6a31] border-[#0f6a31]/20";
@@ -43,19 +41,22 @@ const StatusBadge = ({ status }) => {
 
 const FeatureStageThree = () => {
     return (
-        <section id="stage-repair" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform">
+        // 🚀 OPTIMIZATION: Added transform-gpu to main container for smooth overlap
+        <section id="stage-repair" className="w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 overflow-hidden border-t border-black/5 will-change-transform transform-gpu">
             
-            {/* Background Grid & Glows */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[50%] rounded-full bg-orange-500/5 blur-[120px] pointer-events-none"></div>
-            <div className="absolute bottom-[10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/5 blur-[120px] pointer-events-none"></div>
+            
+            {/* 🚀 OPTIMIZATION: Blur effects offloaded to GPU to prevent scroll jank */}
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[50%] rounded-full bg-orange-500/5 blur-[120px] pointer-events-none transform-gpu"></div>
+            <div className="absolute bottom-[10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/5 blur-[120px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 relative z-10">
                 
                 {/* LEFT COLUMN: THE TIMELINE NARRATIVE */}
                 <div className="lg:col-span-7 flex flex-col lg:pr-8">
                     
-                    <div className="mb-10 text-reveal-3 opacity-0">
+                    {/* 🚀 OPTIMIZATION: Transform-gpu for text reveal animations */}
+                    <div className="mb-10 text-reveal-3 opacity-0 transform-gpu will-change-[transform,opacity]">
                         <span className="text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max mb-4">
                             3.0
                         </span>
@@ -113,7 +114,8 @@ const FeatureStageThree = () => {
                     </div>
 
                     {/* Concluding Rules text */}
-                    <div className="mt-8 text-reveal-3 opacity-0 flex flex-col gap-4 text-[14px] md:text-[15px] font-medium text-gray-600 leading-relaxed bg-white/50 p-6 rounded-2xl border border-gray-100">
+                    {/* 🚀 OPTIMIZATION: Transform-gpu */}
+                    <div className="mt-8 text-reveal-3 opacity-0 transform-gpu will-change-[transform,opacity] flex flex-col gap-4 text-[14px] md:text-[15px] font-medium text-gray-600 leading-relaxed bg-white/50 p-6 rounded-2xl border border-gray-100">
                         <p><strong className="text-[#0f172a]">Assignments commit sequentially.</strong> A substitute booked for one period is seen as busy when ranking the next — so the last decision of the morning is as sound as the first.</p>
                         <p>When a room goes out instead of a teacher, the shape holds. Eligible rooms are the ones on the same campus, with no closure and no booking, whose tag set covers everything the session requires, with capacity for the students attending, and free at that period. They are ranked tightest-capacity-fit first, so a class of twelve does not take the hall.</p>
                         <p>And a chem lab is never swapped for a gym. If the session needs chem-lab and every chem lab is closed or busy, no room is eligible, and the occurrence is flagged <span className="font-mono text-[12px] bg-red-50 text-red-600 px-1 rounded">needsRoom</span> for a human. The non-interchangeability is the feature. A system that would put a titration in the sports hall to keep its grid tidy is a system that is lying to you.</p>
@@ -122,11 +124,13 @@ const FeatureStageThree = () => {
                 </div>
 
                 {/* RIGHT COLUMN: UI CARD (CANDIDATES RANKED) */}
-                <div className="lg:col-span-5 relative w-full lg:sticky lg:top-32 h-max pt-8 lg:pt-0">
+                {/* 🚀 OPTIMIZATION: Explicitly added transform-gpu to the sticky column so it behaves smoothly on iOS */}
+                <div className="lg:col-span-5 relative w-full lg:sticky lg:top-32 h-max pt-8 lg:pt-0 transform-gpu">
                     
-                    <div className="ui-card-stage-3 w-full bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0">
+                    {/* 🚀 OPTIMIZATION: GSAP Animated Card Needs hardware acceleration */}
+                    <div className="ui-card-stage-3 w-full bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0 transform-gpu will-change-transform">
                         
-                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#0f6a31]/5 rounded-full blur-[80px] pointer-events-none"></div>
+                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#0f6a31]/5 rounded-full blur-[80px] pointer-events-none transform-gpu"></div>
 
                         {/* Header */}
                         <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">

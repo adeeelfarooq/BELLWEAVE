@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PageContainer from './PageContainer';
 
 const standardPeriods = [
@@ -21,7 +21,8 @@ const halfDayPeriods = [
     { name: "Dismissal", time: "11:45", type: "end" },
 ];
 
-const ScheduleBlock = ({ name, time, type }) => {
+// 🚀 OPTIMIZATION: React.memo prevents unnecessary re-renders of these small blocks during heavy scrolling/animations
+const ScheduleBlock = memo(({ name, time, type }) => {
     let styles = "bg-white border-gray-200 text-[#0f172a]"; 
     let titleColor = "text-[#0f172a]";
     
@@ -35,33 +36,36 @@ const ScheduleBlock = ({ name, time, type }) => {
     }
 
     return (
-        <div className={`flex flex-col px-3 py-2 rounded-xl border ${styles} min-w-[85px] shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 cursor-default`}>
+        <div className={`flex flex-col px-3 py-2 rounded-xl border ${styles} min-w-[85px] shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 cursor-default transform-gpu`}>
             <span className={`text-[11px] lg:text-xs font-bold uppercase tracking-wider ${titleColor}`}>{name}</span>
             <span className="text-[9px] lg:text-[10px] font-medium opacity-80 mt-0.5">{time}</span>
         </div>
     );
-};
+});
 
 const FeatureStageOne = () => {
     return (
-        <section id="stage-build" className="stage-1-panel col-start-1 row-start-1 w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 shadow-[-30px_0_60px_rgba(0,0,0,0.3)] relative z-10 will-change-transform">
+        // 🚀 OPTIMIZATION: Added transform-gpu to offload the heavy moving shadow to the Graphics Card
+        <section id="stage-build" className="stage-1-panel col-start-1 row-start-1 w-full min-h-dvh bg-[#FAF6EF] text-[#0f172a] py-24 lg:py-36 shadow-[-30px_0_60px_rgba(0,0,0,0.3)] relative z-10 will-change-transform transform-gpu">
             
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/10 blur-[120px] pointer-events-none"></div>
+            {/* 🚀 OPTIMIZATION: Added transform-gpu to the moving blur */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#0f6a31]/10 blur-[120px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center relative z-10">
                 
                 {/* LEFT COLUMN: TEXT CONTENT */}
                 <div className="lg:col-span-6 flex flex-col gap-6 lg:pr-8">
-                    <span className="text-reveal-1 text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0">
+                    {/* 🚀 OPTIMIZATION: Added transform-gpu to GSAP animated elements to prevent jitter */}
+                    <span className="text-reveal-1 transform-gpu text-[#0f6a31] font-black text-4xl lg:text-5xl drop-shadow-sm tracking-tight inline-block w-max opacity-0">
                         1.0
                     </span>
                     
-                    <h2 className="text-reveal-1 text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0">
+                    <h2 className="text-reveal-1 transform-gpu text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-2 text-[#0f172a] opacity-0">
                         Set up the campus.
                     </h2>
                     
-                    <div className="text-reveal-1 flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0">
+                    <div className="text-reveal-1 transform-gpu flex flex-col gap-5 text-sm md:text-[15px] font-medium text-gray-600 leading-relaxed opacity-0">
                         <p>
                             A timetable is not built out of constants. It is built out of what a campus actually does on a Wednesday.
                         </p>
@@ -91,10 +95,12 @@ const FeatureStageOne = () => {
                 {/* RIGHT COLUMN: LUXURY SAAS CARD */}
                 <div className="lg:col-span-6 relative w-full flex justify-center lg:justify-end">
                     
-                    <div className="ui-card-stage-1 w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0">
+                    {/* 🚀 OPTIMIZATION: Added transform-gpu. This card animates via GSAP, so hardware acceleration is a must */}
+                    <div className="ui-card-stage-1 transform-gpu w-full max-w-xl bg-white rounded-3xl p-6 lg:p-8 shadow-2xl border border-gray-100 flex flex-col gap-6 relative overflow-hidden opacity-0">
                         
                         {/* Subtle inner glow */}
-                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#0f6a31]/5 rounded-full blur-[80px] pointer-events-none"></div>
+                        {/* 🚀 OPTIMIZATION: Added transform-gpu to inner moving blur */}
+                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#0f6a31]/5 rounded-full blur-[80px] pointer-events-none transform-gpu"></div>
 
                         {/* Header */}
                         <div className="flex items-center justify-between border-b border-gray-100 pb-4 relative z-10">
@@ -115,7 +121,7 @@ const FeatureStageOne = () => {
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {standardPeriods.map((p, i) => (
-                                        <ScheduleBlock key={i} name={p.name} time={p.time} type={p.type} />
+                                        <ScheduleBlock key={`std-${i}`} name={p.name} time={p.time} type={p.type} />
                                     ))}
                                 </div>
                             </div>
@@ -128,7 +134,7 @@ const FeatureStageOne = () => {
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {halfDayPeriods.map((p, i) => (
-                                        <ScheduleBlock key={i} name={p.name} time={p.time} type={p.type} />
+                                        <ScheduleBlock key={`half-${i}`} name={p.name} time={p.time} type={p.type} />
                                     ))}
                                 </div>
                             </div>

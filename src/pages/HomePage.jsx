@@ -15,30 +15,37 @@ import Footer from '../sections/Footer';
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, ScrollSmoother);
 
 const App = () => {
-  // 🚀 OPTIMIZATION 1: Ref banaya taake GSAP ko sirf isi component tak mehdood rakha ja sake (Memory Leak se bachne k liye)
+  // 🚀 OPTIMIZATION 1: Ref banaya taake GSAP ko sirf isi component tak mehdood rakha ja sake
   const appRef = useRef(null);
 
   useGSAP(() => {
     
     // 🚀 OPTIMIZATION 2: The "Magic Lag Fix" for Mobile
-    // Mobile par scroll karte waqt URL bar chota/bara hone par GSAP ko baar baar refresh hone se roke ga. (Makhhan scroll k liye)
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    // ScrollSmoother Create karna
-    ScrollSmoother.create({
+    // 🚀 CRITICAL FIX: Isey ek variable mein store kiya taake isay destroy kiya ja sake
+    const smoother = ScrollSmoother.create({
       wrapper: '#smooth-wrapper',
       content: '#smooth-content',
       smooth: 1.5, // Desktop ke liye premium luxury smooth
       effects: true, // Parallax aur lag effects on rakhe hain
       
       // 🚀 OPTIMIZATION 3: Touch / Mobile Optimization
-      // Mobile aur iPads k liye heavy smoothing hata di, 0.1 rakhi hai taake premium feel bhi rahe aur bilkul atkay (lag) nahi.
       smoothTouch: 0.1, 
 
-      normalizeScroll: true, // Scroll bugs aur Jittering fix karne k liye
+      // 🚀 OPTIMIZATION 4: Mobile par normalizeScroll bohot bugs (stuck scrolling) create karta hai.
+      // Is logic se ye Desktop par ON rahega, aur Touch devices (Mobile/Tablet) par OFF rahega.
+      normalizeScroll: ScrollTrigger.isTouch ? false : true, 
     });
 
-  }, { scope: appRef }); // 🚀 OPTIMIZATION 4: App destroy/route hone pe animations khud clean hongi
+    // 🚀 CRITICAL OPTIMIZATION 5: Memory Leak & React Router Fix
+    // Jab tum /features page pe jaoge to ye component unmount hoga. 
+    // Agar smoother ko explicitly kill na kiya, to wapas aane par page ka layout toot jayega (blank screen issue).
+    return () => {
+      if (smoother) smoother.kill();
+    };
+
+  }, { scope: appRef }); 
 
   return (
     // Ref pass kar diya

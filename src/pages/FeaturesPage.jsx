@@ -3,11 +3,12 @@ import { ScrollSmoother, ScrollTrigger } from 'gsap/all';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-// 🚀 FIX: Yahan bhi '../' aayega
 import Navbar from '../sections/NavbarSection';
-
 import Footer from '../sections/Footer';
 import FeatureStages from '../sections/FeatureStages';
+
+// 🚀 OPTIMIZATION: Plugin register karna zaroori hai taake direct page load pe error na aaye
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const FeaturesPage = () => {
   const pageRef = useRef(null);
@@ -15,14 +16,23 @@ const FeaturesPage = () => {
   useGSAP(() => {
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    ScrollSmoother.create({
+    // 🚀 CRITICAL FIX: Isay ek variable me store kiya taake cleanup ke waqt destroy kiya ja sake
+    const smoother = ScrollSmoother.create({
       wrapper: '#smooth-wrapper-features',
       content: '#smooth-content-features',
       smooth: 1.5, 
       effects: true,
       smoothTouch: 0.1, 
-      normalizeScroll: true,
+      // 🚀 OPTIMIZATION: Mobile touch par normalizeScroll OFF rakha hai taake scrolling stuck na ho
+      normalizeScroll: ScrollTrigger.isTouch ? false : true,
     });
+
+    // 🚀 CRITICAL OPTIMIZATION: Memory Leak & React Router Fix
+    // Jab user Home page wapis jayega, ye old smoother destroy ho jayega, warna website break ho sakti thi.
+    return () => {
+      if (smoother) smoother.kill();
+    };
+
   }, { scope: pageRef }); 
 
   return (
@@ -34,11 +44,6 @@ const FeaturesPage = () => {
         <div id="smooth-content-features">
           <FeatureStages/>
           <Footer/>
-          
-          
-          {/* Yahan baad mein hum Stage 2, 3, aur 4 lagayenge */}
-          
-          
         </div>
       </div>
     </main>
