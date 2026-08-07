@@ -1,22 +1,41 @@
 // src/App.jsx
-import React, { useLayoutEffect } from 'react'; // 🚀 FIX: useEffect ki jagah useLayoutEffect
+import React, { useLayoutEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+// 🚀 Register Plugins
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // Pages import karein
 import HomePage from './pages/HomePage';
 import FeaturesPage from './pages/FeaturesPage';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
-  // 🚀 FIX: useLayoutEffect screen paint hone se *pehle* scroll to top kar dega
   useLayoutEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant' // 🚀 FIX: Is se directly top pe jayega bina neeche dikhaye ya smooth slide kiye
-    });
-  }, [pathname]);
+    // 🚀 BROWSER JUMP FIX: URL mein hash ho ya na ho, sab se pehle browser ko zabardasti 
+    // instantly TOP par rok do. Is se browser khud se neeche jump nahi karega.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    if (hash) {
+      // 🚀 Phir GSAP ko apna time do taake wo calculations kar ke smoothly scroll down kare
+      setTimeout(() => {
+        ScrollTrigger.refresh(); 
+
+        gsap.to(window, {
+          duration: 1.2, 
+          scrollTo: { 
+            y: hash, 
+            autoKill: true 
+          },
+          ease: "power3.inOut"
+        });
+      }, 500); 
+    }
+  }, [pathname, hash]);
 
   return null;
 };

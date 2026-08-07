@@ -1,6 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
 import PageContainer from '../components/PageContainer';
 import AnimatedHoverText from '../components/AnimatedHoverText';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const stages = [
     { num: "1.0", name: "build", link: "#stage-build" },
@@ -10,6 +16,25 @@ const stages = [
 ];
 
 const FeatureHero = () => {
+
+    const handleStageClick = (e, targetId) => {
+        e.preventDefault(); 
+
+        if (targetId === "#stage-build") {
+            gsap.to(window, {
+                duration: 1.2,
+                scrollTo: { y: 150, autoKill: true }, 
+                ease: "power3.inOut"
+            });
+        } else {
+            gsap.to(window, {
+                duration: 1.5,
+                scrollTo: { y: targetId, autoKill: true },
+                ease: "power3.inOut"
+            });
+        }
+    };
+
     return (
         <section id="feature-hero" className="hero-panel col-start-1 row-start-1 self-start w-full h-dvh flex flex-col justify-center text-white overflow-hidden relative z-0">
             <div className="absolute top-[0%] left-[-10%] w-[50%] h-[60%] rounded-full bg-brand-primary/10 blur-[150px] pointer-events-none"></div>
@@ -18,7 +43,12 @@ const FeatureHero = () => {
             <PageContainer className="z-10 flex flex-col items-center text-center">
                 <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-4 md:mb-6 overflow-hidden">
                     {stages.map((stage, i) => (
-                        <a href={stage.link} key={i} className="stage-tag group flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer">
+                        <a 
+                            href={stage.link} 
+                            key={i} 
+                            onClick={(e) => handleStageClick(e, stage.link)}
+                            className="stage-tag group flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer"
+                        >
                             <span className="text-brand-primary group-hover:text-emerald-400 transition-colors">{stage.num}</span>
                             <span className="text-gray-400 group-hover:text-white transition-colors">{stage.name}</span>
                         </a>
@@ -43,12 +73,12 @@ const FeatureHero = () => {
                 </p>
 
                 <div className="feature-hero-btn-wrapper !mt-6 md:!mt-8">
-                    <div className="hero-button relative inline-flex items-center justify-center group cursor-pointer py-4 !shadow-none" style={{ boxShadow: 'none' }}>
+                    <Link to="/#book-demo" className="hero-button relative inline-flex items-center justify-center group cursor-pointer py-4 !shadow-none" style={{ boxShadow: 'none' }}>
                         <div className="absolute inset-0 bg-brand-primary rounded-full pointer-events-none !shadow-none"></div>
                         <div className="relative z-10 text-white font-bold uppercase tracking-widest m-0 px-8">
                             <AnimatedHoverText text="BOOK A DEMO" />
                         </div>
-                    </div>
+                    </Link>
                 </div>
             </PageContainer>
         </section>

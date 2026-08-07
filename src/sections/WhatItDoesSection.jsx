@@ -3,6 +3,8 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+// 🚀 FIX: React Router se Link import kiya hai
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,18 +14,21 @@ const featuresData = [
     title: "Builds a timetable that holds.",
     desc: "Every teacher, room and class stays conflict-free, automatically, every week of term. When something genuinely can't be scheduled, Bellweave says so instead of quietly forcing it in.",
     link: "Read the rules it never breaks",
+    path: "/features#stage-2" // 🚀 FIX: Path set for Stage 2
   },
   {
     id: "02",
     title: "Covers the Monday someone's out.",
     desc: "The moment a teacher calls in sick, Bellweave finds the best-placed colleague to step in — or tells you plainly when nobody qualified is free, instead of guessing.",
     link: "See a real morning play out",
+    path: "/features#stage-3" // 🚀 FIX: Path set for Stage 3
   },
   {
     id: "03",
     title: "Keeps an honest record.",
     desc: "Every change is logged: who, when, and why. The published plan is never quietly rewritten, so you can always account for what actually happened.",
     link: "See how the record works",
+    path: "/features#stage-4" // 🚀 FIX: Path set for Stage 4
   },
 ];
 
@@ -252,8 +257,9 @@ export default function WhatItDoesSection() {
                     {f.desc}
                   </p>
 
-                  <a
-                    href="#"
+                  {/* 🚀 FIX: <a> tag ko <Link> mein tabdeel kar diya */}
+                  <Link
+                    to={f.path}
                     className="group mt-auto inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-wide"
                     style={{ color: COLORS.gold }}
                   >
@@ -267,7 +273,7 @@ export default function WhatItDoesSection() {
                     <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}

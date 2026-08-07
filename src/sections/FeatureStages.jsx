@@ -115,28 +115,28 @@ const FeatureStages = () => {
             {/* ========================================== */}
             {/* STAGE 2 (Overlaps Stage 1 exactly from bottom) */}
             {/* ========================================== */}
-            <div className="overlap-section relative z-[20] w-full bg-[#FAF6EF] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] rounded-t-[2.5rem]">
-               <FeatureStageTwo />
+            <div id="stage-2" className="overlap-section relative z-[20] w-full bg-[#FAF6EF] rounded-t-[2.5rem]">
+               <FeatureStageTwo  />
             </div>
 
             {/* ========================================== */}
             {/* STAGE 3 (Overlaps Stage 2 exactly from bottom) */}
             {/* ========================================== */}
-            <div className="overlap-section relative z-[30] w-full bg-[#FAF6EF] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] rounded-t-[2.5rem]">
+            <div id="stage-3" className="overlap-section relative z-[30] w-full bg-[#FAF6EF] rounded-t-[2.5rem]">
                <FeatureStageThree />
             </div>
 
             {/* ========================================== */}
             {/* STAGE 4 (Overlaps Stage 3 exactly from bottom) */}
             {/* ========================================== */}
-            <div className="overlap-section relative z-[40] w-full bg-[#FAF6EF] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] rounded-t-[2.5rem]">
+            <div id="stage-4" className="overlap-section relative z-[40] w-full bg-[#FAF6EF] rounded-t-[2.5rem]">
                <FeatureStageFour />
             </div>
 
             {/* ========================================== */}
             {/* CTA SECTION (Overlaps Stage 4 exactly from bottom) */}
             {/* ========================================== */}
-            <div className="relative z-[50] w-full bg-brand-dark shadow-[0_-20px_50px_rgba(0,0,0,0.5)] rounded-t-[2.5rem]">
+            <div  className="relative z-[50] w-full bg-brand-dark rounded-t-[2.5rem]">
                <FeatureCTA />
             </div>
 

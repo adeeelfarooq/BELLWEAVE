@@ -100,7 +100,7 @@ export default function BuiltForSection() {
         trigger: containerRef.current,
         start: "top top",
         end: "+=150%", 
-        scrub: 1.5,
+        scrub: 1,
         pin: true,
       }
     });
