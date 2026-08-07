@@ -34,6 +34,8 @@ const FeaturesPage = () => {
       <div id="smooth-wrapper-features">   
         <div id="smooth-content-features">
           <FeatureStages/>
+          <Footer/>
+          
           
           {/* Yahan baad mein hum Stage 2, 3, aur 4 lagayenge */}
           

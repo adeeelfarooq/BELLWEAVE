@@ -2,9 +2,13 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import FeatureHero from './FeaturesHero';
 import FeatureStageOne from './FeatureStageOne';
 import FeatureStageTwo from './FeatureStageTwo';
+import FeatureStageThree from './FeatureStageThree';
+import FeatureStageFour from './FeatureStageFour';
+import FeatureCTA from './FeatureCTA'; // 🚀 Naya Import!
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,10 +65,8 @@ const FeatureStages = () => {
         });
 
         // ==========================================
-        // 🚀 5. STAGE 2 NORMAL SCROLL ANIMATIONS
+        // STAGE 2 NORMAL SCROLL ANIMATIONS
         // ==========================================
-        
-        // Text headings & paragraphs fade up on scroll
         gsap.utils.toArray(".text-reveal-2").forEach((elem) => {
             gsap.fromTo(elem,
                 { opacity: 0, y: 40 },
@@ -74,7 +76,6 @@ const FeatureStages = () => {
             );
         });
 
-        // Main Luxury Card fade up
         gsap.fromTo(".ui-card-stage-2",
             { opacity: 0, y: 60, scale: 0.95 },
             { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out",
@@ -82,7 +83,6 @@ const FeatureStages = () => {
             }
         );
 
-        // 13 Rules Grid cascade animation
         gsap.fromTo(".rule-card",
             { opacity: 0, y: 30, scale: 0.95 },
             { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.6, ease: "power2.out",
@@ -90,11 +90,67 @@ const FeatureStages = () => {
             }
         );
 
-        // 4 Soft Goals cascade animation
         gsap.fromTo(".soft-goal-card",
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: "power2.out",
               scrollTrigger: { trigger: ".soft-goals-grid", start: "top 85%" }
+            }
+        );
+
+        // ==========================================
+        // STAGE 3 NORMAL SCROLL ANIMATIONS
+        // ==========================================
+        gsap.utils.toArray(".text-reveal-3").forEach((elem) => {
+            gsap.fromTo(elem,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%" }
+            }
+            );
+        });
+
+        gsap.fromTo(".timeline-item",
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power2.out",
+              scrollTrigger: { trigger: ".timeline-item", start: "top 80%" }
+            }
+        );
+
+        gsap.fromTo(".ui-card-stage-3",
+            { opacity: 0, y: 60, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out",
+              scrollTrigger: { trigger: ".ui-card-stage-3", start: "top 85%" }
+            }
+        );
+
+        // ==========================================
+        // STAGE 4 NORMAL SCROLL ANIMATIONS
+        // ==========================================
+        gsap.utils.toArray(".text-reveal-4").forEach((elem) => {
+            gsap.fromTo(elem,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%" }
+            }
+            );
+        });
+
+        gsap.utils.toArray(".ui-card-stage-4").forEach((elem) => {
+            gsap.fromTo(elem,
+                { opacity: 0, y: 60, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%" }
+                }
+            );
+        });
+
+        // ==========================================
+        // 🚀 CTA SCROLL ANIMATIONS
+        // ==========================================
+        gsap.fromTo(".cta-reveal",
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "power2.out",
+              scrollTrigger: { trigger: ".cta-reveal", start: "top 90%" }
             }
         );
 
@@ -103,17 +159,16 @@ const FeatureStages = () => {
     return (
         <div ref={containerRef} className="relative w-full overflow-hidden bg-brand-dark">
             <div className="grid grid-cols-1 grid-rows-1 w-full relative">
-                
-                {/* HERO COMPONENT */}
                <FeatureHero />
-               
-               {/* STAGE 1 COMPONENT */}
                <FeatureStageOne />
-               
             </div>
             
-            {/* 🚀 STAGE 2 COMPONENT (Normal Flow below Stage 1) */}
             <FeatureStageTwo />
+            <FeatureStageThree />
+            <FeatureStageFour />
+            
+            {/* 🚀 CTA INCLUDED HERE */}
+            <FeatureCTA />
             
         </div>
     );
