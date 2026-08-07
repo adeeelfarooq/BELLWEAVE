@@ -99,9 +99,10 @@ const Hero = () => {
                         
                     <div className='hero-content opacity-0 flex flex-col justify-center !pt-16' style={{ willChange: "transform, opacity" }}>
                         
-                        <div className='md:overflow-hidden px-4'>
-                            {/* 🚀 FIX & OPTIMIZATION: Exact 2 lines locked using block and whitespace-nowrap. Tweaked base mobile size slightly (1.65rem) so nowrap doesn't overflow small screens. */}
-                            <h1 className='hero-title transform-gpu text-brand-dark !text-[1.65rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
+                        {/* 🚀 FIX: md:overflow-hidden hata kar overflow-hidden lagaya (mobile par bhi overflow hidden hoga) */}
+                        {/* 🚀 FIX: Mobile font size 1.65rem se 1.5rem kiya taake chhoti screens par bilkul 2 lines mein fit ho */}
+                        <div className='overflow-hidden px-4'>
+                            <h1 className='hero-title transform-gpu text-brand-dark !text-[1.5rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
                                 <span className="block whitespace-nowrap">School scheduling</span>
                                 <span className="block whitespace-nowrap">that tells you the truth</span>
                             </h1>
