@@ -42,13 +42,15 @@ const FeatureHero = () => {
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-blue-500/10 blur-[150px] pointer-events-none transform-gpu"></div>
 
             <PageContainer className="z-10 flex flex-col items-center text-center">
-                <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-4 md:mb-6 overflow-hidden">
+                {/* 🚀 FIX: flex-wrap hata kar flex-nowrap kar diya, aur mobile k liye gap thora kam kiya taake 4 buttons aik line me fit aa jayein */}
+                <div className="flex flex-nowrap w-full justify-center gap-1.5 sm:gap-3 md:gap-6 mb-4 md:mb-6 overflow-hidden">
                     {stages.map((stage, i) => (
                         <a 
                             href={stage.link} 
                             key={i} 
                             onClick={(e) => handleStageClick(e, stage.link)}
-                            className="stage-tag group flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer transform-gpu will-change-transform"
+                            // 🚀 FIX: Mobile k liye padding (px-2 py-1.5) aur text (text-[9px]) ko tweak kiya, aur whitespace-nowrap lagaya taake text na tootay
+                            className="stage-tag group flex items-center justify-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px] md:text-xs font-bold uppercase tracking-widest px-2 sm:px-4 py-1.5 sm:py-2 whitespace-nowrap rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-brand-primary/30 transition-all duration-300 cursor-pointer transform-gpu will-change-transform"
                         >
                             <span className="text-brand-primary group-hover:text-emerald-400 transition-colors">{stage.num}</span>
                             <span className="text-gray-400 group-hover:text-white transition-colors">{stage.name}</span>
