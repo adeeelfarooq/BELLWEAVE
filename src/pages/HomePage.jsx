@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 // 🚀 FIX: Yahan './' ki jagah '../' aayega
-import Navbar from '../sections/NavbarSection';
+import Navbar from '../sections/Navbar';
 import Hero from '../sections/HeroSection';
 import BuiltForSection from '../sections/BuiltForSection';
 import WhatItDoesSection from '../sections/WhatItDoesSection';

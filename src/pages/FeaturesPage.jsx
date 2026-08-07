@@ -3,7 +3,7 @@ import { ScrollSmoother, ScrollTrigger } from 'gsap/all';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-import Navbar from '../sections/NavbarSection';
+import Navbar from '../sections/Navbar';
 import Footer from '../sections/Footer';
 import FeatureStages from '../sections/FeatureStages';
 

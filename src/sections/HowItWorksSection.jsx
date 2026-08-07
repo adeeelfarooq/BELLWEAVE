@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Howitworkstitle from '../components/Howitworkstitle'
-import Howitworksslider from '../components/Howitworksslider'
+import Howitworkstitle from '../components/HowitworksTitle'
+import Howitworksslider from '../components/HowitworksSlider'
 
 const HowItWorksSection = () => {
   return (
