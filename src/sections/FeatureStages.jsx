@@ -114,28 +114,30 @@ const FeatureStages = () => {
             {/* ========================================== */}
             {/* STAGE 2 (Overlaps Stage 1 exactly from bottom) */}
             {/* ========================================== */}
-            <div id="stage-2" className="overlap-section relative z-[20] w-full bg-[#FAF6EF] rounded-t-[2.5rem] transform-gpu">
+            {/* 🚀 FIX: Reduced opacity from 0.12 to 0.06 for a very light and airy shadow */}
+            <div id="stage-2" className="overlap-section relative z-[20] w-full bg-[#FAF6EF] rounded-t-[2.5rem] shadow-[0_-15px_40px_rgba(0,0,0,0.06)] transform-gpu will-change-transform">
                <FeatureStageTwo  />
             </div>
 
             {/* ========================================== */}
             {/* STAGE 3 (Overlaps Stage 2 exactly from bottom) */}
             {/* ========================================== */}
-            <div id="stage-3" className="overlap-section relative z-[30] w-full bg-[#FAF6EF] rounded-t-[2.5rem] transform-gpu">
+            <div id="stage-3" className="overlap-section relative z-[30] w-full bg-[#FAF6EF] rounded-t-[2.5rem] shadow-[0_-15px_40px_rgba(0,0,0,0.06)] transform-gpu will-change-transform">
                <FeatureStageThree />
             </div>
 
             {/* ========================================== */}
             {/* STAGE 4 (Overlaps Stage 3 exactly from bottom) */}
             {/* ========================================== */}
-            <div id="stage-4" className="overlap-section relative z-[40] w-full bg-[#FAF6EF] rounded-t-[2.5rem] transform-gpu">
+            <div id="stage-4" className="overlap-section relative z-[40] w-full bg-[#FAF6EF] rounded-t-[2.5rem] shadow-[0_-15px_40px_rgba(0,0,0,0.06)] transform-gpu will-change-transform">
                <FeatureStageFour />
             </div>
 
             {/* ========================================== */}
             {/* CTA SECTION (Overlaps Stage 4 exactly from bottom) */}
             {/* ========================================== */}
-            <div className="relative z-[50] w-full bg-brand-dark rounded-t-[2.5rem] transform-gpu">
+            {/* 🚀 FIX: Dark section shadow also reduced for a softer blend */}
+            <div className="relative z-[50] w-full bg-brand-dark rounded-t-[2.5rem] shadow-[0_-15px_40px_rgba(0,0,0,0.15)] transform-gpu will-change-transform">
                <FeatureCTA />
             </div>
 
