@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { ScrollSmoother, ScrollTrigger , ScrollToPlugin  } from 'gsap/all';
+import { ScrollSmoother, ScrollTrigger, ScrollToPlugin } from 'gsap/all';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -19,46 +19,79 @@ const App = () => {
   const appRef = useRef(null);
 
   useGSAP(() => {
-    
-    // 🚀 OPTIMIZATION 2: The "Magic Lag Fix" for Mobile
-    ScrollTrigger.config({ ignoreMobileResize: true });
+    // 🚀 MOBILE OPTIMIZATION: Mobile browser address bar resize par
+    // ScrollTrigger ko repeatedly refresh hone se rokta hai
+    ScrollTrigger.config({
+      ignoreMobileResize: true,
+    });
 
-    // 🚀 CRITICAL FIX: Isey ek variable mein store kiya taake isay destroy kiya ja sake
+    // 🚀 CRITICAL FIX: Smoother ko variable mein store kiya
+    // taa-ke component unmount hone par properly destroy ho
     const smoother = ScrollSmoother.create({
       wrapper: '#smooth-wrapper',
       content: '#smooth-content',
-      smooth: 1.5, // Desktop ke liye premium luxury smooth
-      effects: true, // Parallax aur lag effects on rakhe hain
-      
-      // 🚀 OPTIMIZATION 3: Touch / Mobile Optimization
-      smoothTouch: 0.1, 
+      smooth: 1.5,
+      effects: true,
 
-      // 🚀 OPTIMIZATION 4: Mobile par normalizeScroll bohot bugs (stuck scrolling) create karta hai.
-      // Is logic se ye Desktop par ON rahega, aur Touch devices (Mobile/Tablet) par OFF rahega.
-      normalizeScroll: ScrollTrigger.isTouch ? false : true, 
+      // 🚀 MOBILE OPTIMIZATION:
+      // Mobile par native touch scrolling rahegi, isliye stuck nahi hogi
+      
+
+      // Desktop par normalized scrolling, mobile par native scrolling
+      normalizeScroll: ScrollTrigger.isTouch ? false : true,
     });
 
-    // 🚀 CRITICAL OPTIMIZATION 5: Memory Leak & React Router Fix
-    // Jab tum /features page pe jaoge to ye component unmount hoga. 
-    // Agar smoother ko explicitly kill na kiya, to wapas aane par page ka layout toot jayega (blank screen issue).
-    return () => {
-      if (smoother) smoother.kill();
+    // Images aur heavy sections render hone ke baad positions refresh hongi
+    const refreshTimeout = window.setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
+
+    // 🚀 OPTIMIZED RESIZE HANDLER:
+    // Mobile address bar ke height-change par unnecessary refresh nahi hoga
+    let resizeTimeout;
+    let previousWidth = window.innerWidth;
+
+    const handleResize = () => {
+      const currentWidth = window.innerWidth;
+
+      // Touch devices par sirf actual width/orientation change par refresh karo
+      if (ScrollTrigger.isTouch && currentWidth === previousWidth) {
+        return;
+      }
+
+      previousWidth = currentWidth;
+      window.clearTimeout(resizeTimeout);
+
+      resizeTimeout = window.setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
     };
 
-  }, { scope: appRef }); 
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.clearTimeout(refreshTimeout);
+      window.clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', handleResize);
+
+      if (smoother) {
+        smoother.kill();
+      }
+    };
+  }, { scope: appRef });
 
   return (
-    // Ref pass kar diya
     <main ref={appRef}>
-      <Navbar/>
-      <div id="smooth-wrapper">   
+      <Navbar />
+
+      <div id="smooth-wrapper">
         <div id="smooth-content">
-          <Hero/>
-          <BuiltForSection/>
-          <WhatItDoesSection/>
-          <HowItWorksSection/>
-          <BookDemoSection/>
-          <Footer/>
+          <Hero />
+          <BuiltForSection />
+          <WhatItDoesSection />
+          <HowItWorksSection />
+          <BookDemoSection />
+          <Footer />
         </div>
       </div>
     </main>

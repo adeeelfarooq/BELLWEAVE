@@ -14,6 +14,7 @@ const FeaturesPage = () => {
   const pageRef = useRef(null);
 
   useGSAP(() => {
+    // 🚀 Mobile Lag & Resize Jitter Fix
     ScrollTrigger.config({ ignoreMobileResize: true });
 
     // 🚀 CRITICAL FIX: Isay ek variable me store kiya taake cleanup ke waqt destroy kiya ja sake
@@ -27,10 +28,25 @@ const FeaturesPage = () => {
       normalizeScroll: ScrollTrigger.isTouch ? false : true,
     });
 
+    // 2. SAB SE BARA FIX (Sections Merging & Stuck Issue)
+    // Jab images aur heavy elements load ho jayen, toh GSAP ko refresh karo
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000); // 1 second ka delay taa ke sab kuch render ho jaye
+
+    // Resize event pe bhi refresh karo (agar user screen choti bari kare)
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener('resize', handleResize);
+
     // 🚀 CRITICAL OPTIMIZATION: Memory Leak & React Router Fix
     // Jab user Home page wapis jayega, ye old smoother destroy ho jayega, warna website break ho sakti thi.
     return () => {
       if (smoother) smoother.kill();
+      clearTimeout(timeout);
+      window.removeEventListener('resize', handleResize);
     };
 
   }, { scope: pageRef }); 
