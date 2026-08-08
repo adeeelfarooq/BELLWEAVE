@@ -57,19 +57,17 @@ export default function BuiltForSection() {
     // 1. Heading Word-by-word color reveal
     const splitText = new SplitText(".persona-heading", {
       type: "words",
-      wordsClass: "word-item transform-gpu will-change-transform",
+      wordsClass: "word-item transform-gpu", // removed will-change from words to save mobile RAM
     });
 
     gsap.set(splitText.words, { color: "#666", opacity: 0.5 });
 
-    // 🚀 OPTIMIZATION: Removed the heavy .forEach loop! 
-    // Now it uses a SINGLE ScrollTrigger with stagger. Much lighter for mobile CPU!
     gsap.to(splitText.words, {
       color: "#0f172a",
       opacity: 1,
-      stagger: 0.1, // Stagger automatically distributes the effect across the scroll distance
+      stagger: 0.1, 
       ease: "none",
-      force3D: true,
+      force3D: true, // GPU Acceleration
       scrollTrigger: {
         trigger: ".persona-heading",
         start: "top 80%",
@@ -86,7 +84,7 @@ export default function BuiltForSection() {
         y: 0,
         duration: 1,
         ease: "power2.out",
-        force3D: true, // 🚀 OPTIMIZATION: Added force3D
+        force3D: true, 
         scrollTrigger: {
           trigger: ".persona-subtitle",
           start: "top 85%",
@@ -103,20 +101,21 @@ export default function BuiltForSection() {
         end: "+=150%", 
         scrub: 1,
         pin: true,
+        anticipatePin: 1, // 🚀 MOBILE OPTIMIZATION: Prevents pinning jitter on mobile browsers
       }
     });
 
-    pinTl.fromTo(".persona-card", 
+    pinTl.fromTo(".persona-anim-wrapper", 
       { 
-        y: 250, // 🚀 OPTIMIZATION: Reduced from 400 to 250 to prevent layout thrashing on mobile
+        y: 250, 
         opacity: 0 
       },
       { 
         y: 0, 
         opacity: 1,
-        stagger: 0.2,
+        stagger: 0.2, 
         ease: "power2.out",
-        force3D: true,
+        force3D: true, // 🚀 MOBILE OPTIMIZATION: Hardware acceleration
       }
     );
 
@@ -145,18 +144,26 @@ export default function BuiltForSection() {
       ref={containerRef}
       className="bg-[#FAF6EF] text-brand-dark h-screen w-full flex flex-col justify-center px-6 md:px-14 py-6 relative overflow-hidden"
     >
-      {/* 🚀 OPTIMIZATION: Added transform-gpu to prevent blur from lagging the scroll */}
-      <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand-primary/5 blur-[120px] pointer-events-none transform-gpu"></div>
+      {/* 🚀 MOBILE OPTIMIZATION: Fixed heavy CSS blur by putting it on its own GPU layer so CPU doesn't choke on scroll */}
+      <div 
+        className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand-primary/5 blur-[120px] pointer-events-none transform-gpu"
+        style={{ WebkitBackfaceVisibility: "hidden", willChange: "transform" }}
+      ></div>
 
       <div className="max-w-6xl flex flex-col justify-center items-center mx-auto w-full relative z-10">
         
         {/* Header */}
         <div className="max-w-3xl mb-8 md:mb-12">
-          <h1 className="persona-heading hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4">
+          <h1 
+            className="persona-heading hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight mb-4"
+            style={{ WebkitBackfaceVisibility: "hidden" }} // 🚀 MOBILE OPTIMIZATION
+          >
             Built for whoever owns the timetable.
           </h1>
-          {/* 🚀 OPTIMIZATION: Added transform-gpu */}
-          <p className="persona-subtitle transform-gpu text-gray-500 text-center text-sm md:text-lg leading-relaxed font-medium">
+          <p 
+            className="persona-subtitle transform-gpu text-gray-500 text-center text-sm md:text-lg leading-relaxed font-medium"
+            style={{ WebkitBackfaceVisibility: "hidden" }} // 🚀 MOBILE OPTIMIZATION
+          >
             Head teacher, deputy head, business manager, or the person who actually builds the grid every term — Bellweave is built around them.
           </p>
         </div>
@@ -164,25 +171,30 @@ export default function BuiltForSection() {
         {/* Persona Cards Grid */}
         <div className="persona-grid grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {personasData.map((p) => (
+            // 🚀 MOBILE OPTIMIZATION: WebkitPerspective & Hidden Backface fix layout thrashing on iOS Safari
             <div 
               key={p.id} 
-              // 🚀 OPTIMIZATION: Added transform-gpu and will-change-transform for buttery smooth animation
-              className="persona-card transform-gpu will-change-transform group bg-white border border-gray-100 rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+              className="persona-anim-wrapper transform-gpu h-full"
+              style={{ WebkitBackfaceVisibility: "hidden", perspective: 1000, willChange: "transform, opacity" }}
             >
-              {/* Icon Box */}
-              <div className="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-3 md:mb-6 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
-                {p.icon}
+              <div 
+                className="persona-card h-full group bg-white border border-gray-100 rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+              >
+                {/* Icon Box */}
+                <div className="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-3 md:mb-6 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+                  {p.icon}
+                </div>
+
+                {/* Role Title */}
+                <h3 className="text-sm md:text-lg font-bold text-brand-dark mb-1.5 md:mb-3 leading-snug">
+                  {p.role}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-medium hidden sm:block">
+                  {p.desc}
+                </p>
               </div>
-
-              {/* Role Title */}
-              <h3 className="text-sm md:text-lg font-bold text-brand-dark mb-1.5 md:mb-3 leading-snug">
-                {p.role}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-medium hidden sm:block">
-                {p.desc}
-              </p>
             </div>
           ))}
         </div>
