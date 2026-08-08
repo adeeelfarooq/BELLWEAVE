@@ -1,23 +1,21 @@
 import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-// 🚀 OPTIMIZATION: Faltu useMediaQuery nikal diya jo mobile pe jhatkay de raha tha
 import { SplitText, ScrollTrigger, ScrollToPlugin } from "gsap/all";
 import AnimatedHoverText from "../components/AnimatedHoverText";
 
 gsap.registerPlugin(SplitText, ScrollTrigger, ScrollToPlugin);
 
-// 🚀 OPTIMIZATION: Styles ko bahar nikal diya taake bar bar calculate na hon
+// 🚀 OPTIMIZATION: translate3d use kiya taa ke CSS animation GPU par shift ho jaye
 const marqueeStyles = `
     @keyframes marquee-scroll {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-50%); }
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-50%, 0, 0); }
     }
     .animate-marquee-horizontal {
         display: inline-block;
         white-space: nowrap;
         animation: marquee-scroll 20s linear infinite;
-        will-change: transform; /* 🚀 Mobile scroll performance boost */
     }
 `;
 
@@ -25,25 +23,13 @@ const Hero = () => {
     const containerRef = useRef(null);
 
     useGSAP(() => {
-        // 🚀 GLOBAL MOBILE FIXES (App.js wala pattern)
+        // 🚀 MOBILE FIX: Address bar upar/neeche hone par jhatka roknay ke liye
         ScrollTrigger.config({ ignoreMobileResize: true });
 
-        // 1-second baad refresh: taake Hero aur uske baad ke sections ki heights sahi set ho jayen
-        const refreshTimer = setTimeout(() => {
-            ScrollTrigger.refresh();
-        }, 1000);
-
-        // Resize event pe refresh (mobile rotate, browser zoom etc.)
-        const handleResize = () => {
-            ScrollTrigger.refresh();
-        };
-        window.addEventListener('resize', handleResize);
-
-        // 🔥 AB AAGE WAALI SAARI ANIMATIONS
         const titleSplit = new SplitText(".hero-title", { type: "chars" });
 
         const tl = gsap.timeline({
-            delay: 0.2, // 🚀 Thora delay kam kiya taake blank screen na dikhay
+            delay: 0.2, 
             defaults: { force3D: true }
         });
 
@@ -62,17 +48,19 @@ const Hero = () => {
             opacity: 0,
             stagger: 0.02, 
             ease: "power3.out",
-            force3D: true // 🚀 OPTIMIZATION: Text hardware acceleration
+            force3D: true 
         }, "-=0.6");
 
         const heroTl = gsap.timeline({
             scrollTrigger: {
-                trigger: ".hero-container",
+                // 🚀 CRITICAL FIX: Trigger ko outer section rakha taa ke animation infinite loop (stuck) na kare
+                trigger: "#hero-container", 
                 start: "top top",
                 end: "bottom top",
                 scrub: 1, 
                 invalidateOnRefresh: true, 
                 fastScrollEnd: true, 
+                anticipatePin: 1, // 🚀 MOBILE FIX: Stuck/jhatka fix
             },
             defaults: { force3D: true } 
         });
@@ -86,11 +74,15 @@ const Hero = () => {
             ease: "none" 
         });
 
-        // 🚀 Cleanup: timers aur event listeners hatao (App.js wala pattern)
+        // 🚀 GLOBAL REFRESH (App.js wali logic)
+        // Jab sab components aur images render ho jayen, tab heights perfect calculate hon
+        const timeout = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 1000);
+
         return () => {
-            clearTimeout(refreshTimer);
-            window.removeEventListener('resize', handleResize);
             titleSplit.revert();
+            clearTimeout(timeout);
         };
 
     }, { scope: containerRef }); 
@@ -117,8 +109,6 @@ const Hero = () => {
                         
                     <div className='hero-content opacity-0 flex flex-col justify-center !pt-16' style={{ willChange: "transform, opacity" }}>
                         
-                        {/* 🚀 FIX: md:overflow-hidden hata kar overflow-hidden lagaya (mobile par bhi overflow hidden hoga) */}
-                        {/* 🚀 FIX: Mobile font size 1.65rem se 1.5rem kiya taake chhoti screens par bilkul 2 lines mein fit ho */}
                         <div className='overflow-hidden px-4'>
                             <h1 className='hero-title transform-gpu text-brand-dark !text-[1.5rem] sm:!text-[2.8rem] md:!text-[4.5rem] lg:!text-[5.5rem] !leading-[1.1]'>
                                 <span className="block whitespace-nowrap">School scheduling</span>
