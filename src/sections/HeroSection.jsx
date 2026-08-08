@@ -25,6 +25,21 @@ const Hero = () => {
     const containerRef = useRef(null);
 
     useGSAP(() => {
+        // 🚀 GLOBAL MOBILE FIXES (App.js wala pattern)
+        ScrollTrigger.config({ ignoreMobileResize: true });
+
+        // 1-second baad refresh: taake Hero aur uske baad ke sections ki heights sahi set ho jayen
+        const refreshTimer = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 1000);
+
+        // Resize event pe refresh (mobile rotate, browser zoom etc.)
+        const handleResize = () => {
+            ScrollTrigger.refresh();
+        };
+        window.addEventListener('resize', handleResize);
+
+        // 🔥 AB AAGE WAALI SAARI ANIMATIONS
         const titleSplit = new SplitText(".hero-title", { type: "chars" });
 
         const tl = gsap.timeline({
@@ -71,7 +86,10 @@ const Hero = () => {
             ease: "none" 
         });
 
+        // 🚀 Cleanup: timers aur event listeners hatao (App.js wala pattern)
         return () => {
+            clearTimeout(refreshTimer);
+            window.removeEventListener('resize', handleResize);
             titleSplit.revert();
         };
 
